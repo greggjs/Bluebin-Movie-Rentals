@@ -55,7 +55,7 @@ public class Main {
         //returnFrame = new Return(this);
         addMovieFrame = new AddMovie(this);
         //searchFrame = new Search(this);
-        searchResultsFrame = new SearchResults(this);
+        //searchResultsFrame = new SearchResults(this);
         frame.setVisible(true);
     }
 }

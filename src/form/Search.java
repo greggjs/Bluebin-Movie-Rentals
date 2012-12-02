@@ -320,6 +320,8 @@ public class Search extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        search();
+        main.searchResultsFrame = new SearchResults(main);
         main.searchResultsFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -397,6 +399,12 @@ public class Search extends javax.swing.JFrame {
         PG13Radio.setSelected(true);
         
         
+    }
+    
+    public void search() {
+        String bank = "";
+        StringBuilder bank_build = new StringBuilder();
+        bank_build.append("select ");
     }
     
     /**
