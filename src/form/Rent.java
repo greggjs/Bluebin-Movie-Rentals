@@ -28,12 +28,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Rent extends javax.swing.JFrame {
     Main main;
-    Object[][] data = new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            };
+    Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Release Date", "Rating", "Quantity"
             };
@@ -186,12 +181,7 @@ public class Rent extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         rentMovie();
-        data = new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            };
+        data = null;
         model = new DefaultTableModel(data, col);
         MovieTable.setModel(model);
         fillTable();

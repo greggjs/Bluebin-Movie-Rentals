@@ -119,7 +119,7 @@ public class Search extends javax.swing.JFrame {
         KeywordRadio.setText("Keyword");
 
         jComboBox1.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(null);
 
         jLabel2.setBackground(new java.awt.Color(0, 100, 123));
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -166,14 +166,14 @@ public class Search extends javax.swing.JFrame {
         jLabel4.setText("Release Year");
 
         jComboBox3.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(null);
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Actor");
 
         jComboBox2.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(null);
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);

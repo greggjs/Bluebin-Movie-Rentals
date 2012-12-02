@@ -30,12 +30,7 @@ import movie.*;
 public class Return extends javax.swing.JFrame {
     Main main;
     NumberFormat nf = NumberFormat.getCurrencyInstance();
-    Object[][] data = new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            };
+    Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Rent Date", "Due Date", "Day(s) Late"
             };
@@ -181,12 +176,7 @@ public class Return extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         returnMovie();
-        data = new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            };
+        data = null;
         model = new DefaultTableModel(data, col);
         jTable1.setModel(model);
         fillTable();
