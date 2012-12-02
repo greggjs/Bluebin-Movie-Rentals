@@ -186,10 +186,11 @@ public class MainFrame extends javax.swing.JFrame {
       }
       char[] pwd_arr = PasswordField.getPassword();
       String pwd = new String(pwd_arr);
-      String bank = "SELECT renter_phone FROM Renter where renter_phone = '" + test + "'";
-      String pwd_bank = "SELECT password FROM Renter where password = '" + pwd + "'";
+      String bank = "SELECT renter_phone, password, renter_name FROM Renter where renter_phone = '" + test + "';";
+      String pwd_bank = "SELECT password FROM Renter where password = '" + pwd + "';";
       String phone = null;
       String pwd_check = null;
+      String name = null;
       
       if (test.equals("")) {
           JOptionPane.showMessageDialog(this, "Please enter a phone number\nExample: 5555555555\nError: NullUser");
@@ -207,18 +208,24 @@ public class MainFrame extends javax.swing.JFrame {
       
       try {
           Class.forName("com.mysql.jdbc.Driver");
-          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+          Connection conn = DriverManager.getConnection(
+                  "jdbc:mysql://localhost:3307/fall2012"
+                  + "?user=greggjs&password=greggjs");
           Statement stm = conn.createStatement();
           ResultSet rs = stm.executeQuery(bank);
           while (rs.next()) {
             phone = rs.getString("renter_phone");
+            pwd_check = rs.getString("password");
+            name = rs.getString("renter_name");
           }
-          rs = stm.executeQuery(pwd_bank);
+          /*rs = stm.executeQuery(pwd_bank);
           while (rs.next()) {
             pwd_check = rs.getString("password");
-          }
+          }*/
+          
       } catch (SQLException err) {
           System.out.println("problem has occurred");
+          err.printStackTrace();
       } catch (ClassNotFoundException e) {
           System.out.println ("cannot find driver!");
       }
@@ -234,10 +241,12 @@ public class MainFrame extends javax.swing.JFrame {
           this.PasswordField.setText("");
       }
       else {  
+          
+          
           this.setVisible(false);
           this.UserInput.setText("");
           this.PasswordField.setText("");
-          main.curr = new Renter(phone);
+          main.curr = new Renter(name, phone);
           main.loginUserFrame = new UserLogIn(main);
           main.loginUserFrame.setVisible(true);
           

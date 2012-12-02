@@ -184,6 +184,55 @@ public class Rent extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        rentMovie();
+        data = new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            };
+        model = new DefaultTableModel(data, col);
+        MovieTable.setModel(model);
+        fillTable();
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void fillTable() {
+        String bank = "select * from Movie where release_date > '2000-01-01' order by release_date desc;";
+        StringBuilder new_releases = new StringBuilder("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                new_releases.append(rs.getString("movie_name"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("release_date"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("rating"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("quantity"));
+                new_releases.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        String new_releases_s = new_releases.toString();
+        String [] rel_arr = new_releases_s.split("~");
+        int row = 0;
+        for (int i = 0; i < rel_arr.length-3; i+=4) {
+            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
+            row++;
+        }
+    }
+    
+    public void rentMovie() {
+        
         int row_selected = MovieTable.getSelectedRow();
         if (row_selected == -1) {
             JOptionPane.showMessageDialog(this, "Please select a movie to rent");
@@ -241,39 +290,20 @@ public class Rent extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    public void fillTable() {
-        String bank = "select * from Movie where release_date > '2000-01-01' order by release_date desc;";
-        StringBuilder new_releases = new StringBuilder("");
+        bank = "update Movie set quantity "
+                + "= quantity-1 where movie_id="+movie_id+";";
+        
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            while(rs.next()) {
-                new_releases.append(rs.getString("movie_name"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("release_date"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("rating"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("quantity"));
-                new_releases.append("~");
-            }
-          
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
         } catch (SQLException err) {
             System.out.println("problem has occurred");
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
-        }
-        
-        String new_releases_s = new_releases.toString();
-        String [] rel_arr = new_releases_s.split("~");
-        int row = 0;
-        for (int i = 0; i < rel_arr.length-3; i+=4) {
-            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
-            row++;
         }
     }
     
