@@ -1,5 +1,14 @@
 package form;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import movie.*;
 
 /*
@@ -19,10 +28,18 @@ import movie.*;
  */
 public class SearchResults extends javax.swing.JFrame {
     Main main;
-    
+    StringBuilder res;
+    Object[][] data = null;
+    String col[] = new String [] {
+                "Title", "Release Date", "Rating", "Quantity"
+            };
+    DefaultTableModel model;
     /** Creates new  */
-    public SearchResults(Main main) {
+    public SearchResults(Main main, StringBuilder res) {
         this.main = main;
+        this.res = res;
+        model = new DefaultTableModel(data, col);
+        
         initComponents();
     }
 
@@ -45,6 +62,9 @@ public class SearchResults extends javax.swing.JFrame {
         setTitle("Search Results");
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -75,25 +95,7 @@ public class SearchResults extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Title", "Release Date", "Rating", "Genre(s)", "Copy(s) Avilb."
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        jTable1.setModel(model);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jTable1);
 
@@ -107,7 +109,7 @@ public class SearchResults extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(233, 233, 233)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -120,7 +122,7 @@ public class SearchResults extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -146,24 +148,131 @@ public class SearchResults extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        rentMovie();
+        data = null;
+        model = new DefaultTableModel(data, col);
+        jTable1.setModel(model);
+        fillTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
+        main.searchResultsFrame = null;
         main.searchFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        main.searchResultsFrame = null;
         main.searchFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        fillTable();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
     * @param args the command line arguments
     */
-    
+    public void fillTable() {
+        String res_s = res.toString();
+        String [] rel_arr = res_s.split("~");
+        int row = 0;
+        for (int i = 0; i < rel_arr.length-3; i+=4) {
+            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
+            row++;
+        }
+    }
 
+    public void rentMovie() {
+        
+        int row_selected = jTable1.getSelectedRow();
+        if (row_selected == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a movie to rent");
+            return;
+        }
+        String movie_title = jTable1.getModel().getValueAt(row_selected, 0).toString();
+        String movie_q = "select movie_id from Movie where movie_name='"+movie_title+"'";
+        String movie_id = null;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(movie_q);
+            while(rs.next()) {
+                movie_id = rs.getString("movie_id");
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        int choice = JOptionPane.showConfirmDialog(this, 
+                "Charge this to your credit card on file for this"
+                + " rental?",
+                "Rent New Release", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.NO_OPTION)
+            return;
+        
+        Long curr_time = System.currentTimeMillis();
+        Long seven_days = (long)604800000;
+        Long due_time = curr_time+seven_days;
+        
+        Date curr_date = new Date(curr_time);
+        Date due_date = new Date(due_time);
+        
+        String bank = "insert into Has_Rented values('"
+                +main.curr.getPhone()+"', "+movie_id
+                +", '"+curr_date+"','"+due_date+"');";
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(this, "You already rented this movie...");
+            return;
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        int quantity = Integer.parseInt(
+                (String)(jTable1.getModel()
+                .getValueAt(row_selected, 3)));
+        
+        if (quantity == 0) {
+            JOptionPane.showMessageDialog(this, "Out of Stock");
+            return;
+        }
+        
+        
+        bank = "update Movie set quantity "
+                + "= quantity-1 where movie_id="+movie_id+";";
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
