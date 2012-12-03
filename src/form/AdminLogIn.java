@@ -93,8 +93,10 @@ public class AdminLogIn extends javax.swing.JFrame {
             }
         });
 
+        MovieTitleField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         MovieTitleField.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Movie Title", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 10))); // NOI18N
 
+        RenterPhoneField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         RenterPhoneField.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Renter's Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 10))); // NOI18N
         RenterPhoneField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,8 +224,7 @@ public class AdminLogIn extends javax.swing.JFrame {
         this.setVisible(false);
         MovieTitleField.setText(null);
         RenterPhoneField.setText(null);
-        main.movieStatusFrame = new MovieStatus(main);
-        main.movieStatusFrame.id = movie_id;
+        main.movieStatusFrame = new MovieStatus(main, movie_id);
         main.movieStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

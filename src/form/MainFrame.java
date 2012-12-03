@@ -320,6 +320,7 @@ public class MainFrame extends javax.swing.JFrame {
           this.setVisible(false);
           this.UserInput.setText("");
           this.PasswordField.setText("");
+          main.loginAdminFrame = new AdminLogIn(main);
           main.loginAdminFrame.setVisible(true);
       }
     }//GEN-LAST:event_jButton3ActionPerformed

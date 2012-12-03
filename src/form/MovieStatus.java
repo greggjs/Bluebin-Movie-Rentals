@@ -1,5 +1,10 @@
 package form;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import movie.*;
 
@@ -21,6 +26,8 @@ import movie.*;
 public class MovieStatus extends javax.swing.JFrame {
     Main main;
     String id;
+    String title;
+    int stock, rented, total;
     Object [][] data = null;
     String[] col = new String [] {
                 "Name", "Rent Date", "Due Date"
@@ -28,8 +35,9 @@ public class MovieStatus extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel(data, col);
     
     /** Creates new  */
-    public MovieStatus(Main main) {
+    public MovieStatus(Main main, String id) {
         this.main = main;
+        this.id = id;
         initialize();
         initComponents();
     }
@@ -59,7 +67,6 @@ public class MovieStatus extends javax.swing.JFrame {
         TotalLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Movie Status");
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -126,17 +133,17 @@ public class MovieStatus extends javax.swing.JFrame {
 
         TitleLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         TitleLabel.setForeground(new java.awt.Color(255, 255, 255));
-        TitleLabel.setText("Status for <Movie Title>");
+        TitleLabel.setText("Status for " + title);
         TitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         AvailableLabels.setForeground(new java.awt.Color(255, 255, 255));
-        AvailableLabels.setText("<Int>");
+        AvailableLabels.setText(stock+"");
 
         RentedLabel.setForeground(new java.awt.Color(255, 255, 255));
-        RentedLabel.setText("<Int>");
+        RentedLabel.setText(rented+"");
 
         TotalLabel.setForeground(new java.awt.Color(255, 255, 255));
-        TotalLabel.setText("<Int>");
+        TotalLabel.setText(""+total);
 
         jButton1.setText("Remove All Copies");
 
@@ -242,9 +249,56 @@ public class MovieStatus extends javax.swing.JFrame {
     
     public void initialize() {
         String bank = "select movie_name from Movie where movie_id="+id+";";
+        title = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                title = rs.getString("movie_name");
+            }
+            
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
         
-;    }
-
+        bank = "select quantity from Movie where movie_id="+id+";";
+        stock = getQuantity(bank);
+        
+        bank = "select COUNT(movie_id) from Has_Rented where movie_id="+id+";";
+        rented = getQuantity(bank);
+        
+        total = stock+rented;
+           
+    }
+    
+    private int getQuantity(String bank) {
+        int n = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                n = rs.getInt("quantity");
+            }
+            
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        return n;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AvailableLabels;
     private javax.swing.JLabel RentedLabel;

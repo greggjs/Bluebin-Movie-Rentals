@@ -47,9 +47,9 @@ public class Main {
     public void run() {
         frame = new MainFrame(this);
         //loginUserFrame = new UserLogIn(this);
-        loginAdminFrame = new AdminLogIn(this);
+        //loginAdminFrame = new AdminLogIn(this);
         newAccountFrame = new NewAccountPage(this);
-        movieStatusFrame = new MovieStatus(this);
+        //movieStatusFrame = new MovieStatus(this);
         //rentFrame = new Rent(this);
         renterStatusFrame = new RenterStatus(this);
         //returnFrame = new Return(this);
