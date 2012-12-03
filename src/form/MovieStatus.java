@@ -70,6 +70,9 @@ public class MovieStatus extends javax.swing.JFrame {
         setTitle("Movie Status");
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -100,25 +103,7 @@ public class MovieStatus extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Name", "Rent Date", "Due Date"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        jTable1.setModel(model);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jTable1);
 
@@ -133,7 +118,7 @@ public class MovieStatus extends javax.swing.JFrame {
 
         TitleLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         TitleLabel.setForeground(new java.awt.Color(255, 255, 255));
-        TitleLabel.setText("Status for " + title);
+        TitleLabel.setText("Status for \"" + title+"\"");
         TitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         AvailableLabels.setForeground(new java.awt.Color(255, 255, 255));
@@ -243,6 +228,11 @@ public class MovieStatus extends javax.swing.JFrame {
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        fillTable();
+    }//GEN-LAST:event_formWindowOpened
+
     /**
     * @param args the command line arguments
     */
@@ -268,16 +258,16 @@ public class MovieStatus extends javax.swing.JFrame {
         }
         
         bank = "select quantity from Movie where movie_id="+id+";";
-        stock = getQuantity(bank);
+        stock = getQuantity(bank, "quantity");
         
         bank = "select COUNT(movie_id) from Has_Rented where movie_id="+id+";";
-        rented = getQuantity(bank);
+        rented = getQuantity(bank, "count(movie_id)");
         
         total = stock+rented;
            
     }
     
-    private int getQuantity(String bank) {
+    private int getQuantity(String bank, String query) {
         int n = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -287,16 +277,55 @@ public class MovieStatus extends javax.swing.JFrame {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
-                n = rs.getInt("quantity");
+                n = rs.getInt(query);
             }
             
         } catch (SQLException err) {
             System.out.println("problem has occurred");
+            err.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
         
         return n;
+    }
+    
+    public void fillTable() {
+        String bank = "select renter_name, rent_date, due_date"
+                + " from Renter natural join Has_Rented"
+                + " where movie_id="+id+";";
+        StringBuilder new_releases = new StringBuilder("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                new_releases.append(rs.getString("renter_name"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("rent_date"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("due_date"));
+                new_releases.append("~");
+                
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+            err.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        String new_releases_s = new_releases.toString();
+        String [] rel_arr = new_releases_s.split("~");
+        int row = 0;
+        for (int i = 0; i < rel_arr.length-2; i+=3) {
+            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2]});
+            row++;
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

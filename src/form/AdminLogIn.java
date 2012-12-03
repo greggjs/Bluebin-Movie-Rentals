@@ -51,6 +51,9 @@ public class AdminLogIn extends javax.swing.JFrame {
         setTitle("Admin");
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 WindowClosing(evt);
             }
@@ -247,11 +250,17 @@ public class AdminLogIn extends javax.swing.JFrame {
         main.addMovieFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
+
     /**
     * @param args the command line arguments
     */
    
-
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField MovieTitleField;
     private javax.swing.JTextField RenterPhoneField;

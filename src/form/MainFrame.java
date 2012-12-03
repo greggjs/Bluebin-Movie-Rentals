@@ -286,11 +286,8 @@ public class MainFrame extends javax.swing.JFrame {
       
       try {
           Class.forName("com.mysql.jdbc.Driver");
-          System.out.println("Driver good");
           Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
-          System.out.println("Conn good");
           Statement stm = conn.createStatement();
-          System.out.println("Statement good");
           ResultSet rs = stm.executeQuery(bank);
           while (rs.next()) {
             admin = rs.getString("admin_id");
