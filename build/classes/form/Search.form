@@ -275,7 +275,7 @@
               <Color blue="7b" green="64" red="0" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="null" type="code"/>
+              <Connection code="model" type="code"/>
             </Property>
           </Properties>
         </Component>
@@ -403,7 +403,7 @@
               <Color blue="7b" green="64" red="0" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="null" type="code"/>
+              <Connection code="model2" type="code"/>
             </Property>
           </Properties>
         </Component>
@@ -424,7 +424,7 @@
               <Color blue="7b" green="64" red="0" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="null" type="code"/>
+              <Connection code="model3" type="code"/>
             </Property>
           </Properties>
           <Events>

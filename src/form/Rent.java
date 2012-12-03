@@ -281,6 +281,16 @@ public class Rent extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
+        int quantity = Integer.parseInt(
+                (String)(MovieTable.getModel()
+                .getValueAt(row_selected, 3)));
+        
+        if (quantity == 0) {
+            JOptionPane.showMessageDialog(this, "Out of Stock");
+            return;
+        }
+        
+        
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
         

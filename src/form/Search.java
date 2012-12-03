@@ -25,9 +25,13 @@ import movie.*;
  */
 public class Search extends javax.swing.JFrame {
     Main main;
+    DefaultComboBoxModel model;
+    DefaultComboBoxModel model2;
+    DefaultComboBoxModel model3;
     /** Creates new  */
     public Search(Main main) {
         this.main = main;
+        initialize();
         initComponents();
     }
 
@@ -119,7 +123,7 @@ public class Search extends javax.swing.JFrame {
         KeywordRadio.setText("Keyword");
 
         jComboBox1.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox1.setModel(null);
+        jComboBox1.setModel(model);
 
         jLabel2.setBackground(new java.awt.Color(0, 100, 123));
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -166,14 +170,14 @@ public class Search extends javax.swing.JFrame {
         jLabel4.setText("Release Year");
 
         jComboBox3.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox3.setModel(null);
+        jComboBox3.setModel(model2);
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Actor");
 
         jComboBox2.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox2.setModel(null);
+        jComboBox2.setModel(model3);
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -345,7 +349,7 @@ public class Search extends javax.swing.JFrame {
     public void initialize() {
         String bank = "select category_name from Category;";
         String[] cat_arr = new String[30];
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model = new DefaultComboBoxModel();
         model.addElement("");
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -365,10 +369,8 @@ public class Search extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-        jComboBox1.setModel(model);
-        
         bank = "select actor_name from Actor";
-        DefaultComboBoxModel model2 = new DefaultComboBoxModel();
+        model2 = new DefaultComboBoxModel();
         model2.addElement("");
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -387,16 +389,13 @@ public class Search extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
-        jComboBox3.setModel(model2);
-        DefaultComboBoxModel model3 = new DefaultComboBoxModel();
+        
+        model3 = new DefaultComboBoxModel();
         model3.addElement("");
         for (int i = 1920; i < 2013; i++) {
             model3.addElement(i);
         }
-        jComboBox2.setModel(model3);
         
-        TitleRadio.setSelected(true);
-        PG13Radio.setSelected(true);
         
         
     }
