@@ -65,9 +65,9 @@ public class Search extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         PG13Radio = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox();
+        ActorBox = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        YearBox = new javax.swing.JComboBox();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -173,18 +173,18 @@ public class Search extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Release Year");
 
-        jComboBox3.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox3.setModel(model2);
+        ActorBox.setBackground(new java.awt.Color(0, 100, 123));
+        ActorBox.setModel(model2);
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Actor");
 
-        jComboBox2.setBackground(new java.awt.Color(0, 100, 123));
-        jComboBox2.setModel(model3);
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        YearBox.setBackground(new java.awt.Color(0, 100, 123));
+        YearBox.setModel(model3);
+        YearBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                YearBoxActionPerformed(evt);
             }
         });
 
@@ -203,8 +203,18 @@ public class Search extends javax.swing.JFrame {
         });
 
         jButton5.setText("Search");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Search");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -214,7 +224,7 @@ public class Search extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ActorBox, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -262,7 +272,7 @@ public class Search extends javax.swing.JFrame {
                                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(122, 122, 122)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(YearBox, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 24, Short.MAX_VALUE)))
@@ -298,13 +308,13 @@ public class Search extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(YearBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6))
                 .addGap(21, 21, 21)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ActorBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(27, 27, 27)
                 .addComponent(jButton2)
@@ -337,9 +347,9 @@ public class Search extends javax.swing.JFrame {
         initialize();
     }//GEN-LAST:event_formWindowOpened
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void YearBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YearBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_YearBoxActionPerformed
 
     private void PGRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PGRadioActionPerformed
         // TODO add your handling code here:
@@ -352,7 +362,7 @@ public class Search extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        search();
+        searchActor();
         //main.searchResultsFrame = new SearchResults(main,);
         main.searchResultsFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -375,6 +385,16 @@ public class Search extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchGenre();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        searchRating();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        searchReleaseYear();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     public void initialize() {
         String bank = "select category_name from Category;";
@@ -484,6 +504,7 @@ public class Search extends javax.swing.JFrame {
     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox ActorBox;
     private javax.swing.JRadioButton GRadio;
     private javax.swing.JComboBox GenreBox;
     private javax.swing.JRadioButton KeywordRadio;
@@ -493,6 +514,7 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JRadioButton RRadio;
     private javax.swing.JTextField SearchField;
     private javax.swing.JRadioButton TitleRadio;
+    private javax.swing.JComboBox YearBox;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
@@ -501,8 +523,6 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -511,16 +531,16 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    private void searchGenre() {
+    public void searchGenre() {
         String genre = (String)GenreBox.getSelectedItem();
         if (genre==null) {
             JOptionPane.showMessageDialog(this, "Please select a genre");
             return;
         }
-        String bank = "select movie_name from Movie "
+        String bank = "select * from Movie "
                 + "natural join Has_Category natural "
                 + "join Category where category_name='"
-                +genre+"'";
+                +genre+"';";
         
         StringBuilder res = new StringBuilder();
         
@@ -544,6 +564,145 @@ public class Search extends javax.swing.JFrame {
           
         } catch (SQLException err) {
             System.out.println("problem has occurred");
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        main.searchFrame.setVisible(false);
+        main.searchResultsFrame = new SearchResults(main, res);
+        main.searchResultsFrame.setVisible(true);
+    }
+    
+    public void searchRating() {
+        String bank=null;
+        
+        if (GRadio.isSelected()) {
+            bank = "select * from Movie where rating='"+GRadio.getText()+"';";
+        }
+        else if (PGRadio.isSelected()) {
+            bank = "select * from Movie where rating ='"+PGRadio.getText()+"';";
+        }
+        else if (PG13Radio.isSelected()) {
+            bank = "select * from Movie where rating ='PG13';";
+        }
+        else if (RRadio.isSelected()) {
+            bank = "select * from Movie where rating ='"+RRadio.getText()+"';";
+        }
+        else if (NC17Radio.isSelected()) {
+            bank = "select * from Movie where rating ='NC17';";
+        }
+        
+        System.out.println(bank);
+        StringBuilder res = new StringBuilder();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                res.append(rs.getString("movie_name"));
+                res.append("~");
+                res.append(rs.getString("release_date"));
+                res.append("~");
+                res.append(rs.getString("rating"));
+                res.append("~");
+                res.append(rs.getString("quantity"));
+                res.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        main.searchFrame.setVisible(false);
+        main.searchResultsFrame = new SearchResults(main, res);
+        main.searchResultsFrame.setVisible(true);
+    }
+    
+    public void searchReleaseYear() {
+        int year;
+        year = (Integer)YearBox.getSelectedItem();
+        if (year==0) {
+            JOptionPane.showMessageDialog(this, "Please select a year");
+            return;
+        }
+        String bank = "select * from Movie "
+                + "where release_date > '"
+                +year+"-01-01' and release_date < '"+year+"-12-31';";
+        System.out.println(bank);
+        
+        StringBuilder res = new StringBuilder();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                res.append(rs.getString("movie_name"));
+                res.append("~");
+                res.append(rs.getString("release_date"));
+                res.append("~");
+                res.append(rs.getString("rating"));
+                res.append("~");
+                res.append(rs.getString("quantity"));
+                res.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        main.searchFrame.setVisible(false);
+        main.searchResultsFrame = new SearchResults(main, res);
+        main.searchResultsFrame.setVisible(true);
+    }
+    
+    public void searchActor() {
+        String actor = (String)ActorBox.getSelectedItem();
+        if (actor==null) {
+            JOptionPane.showMessageDialog(this, "Please select a actor");
+            return;
+        }
+        String bank = "select * from Movie "
+                + "natural join Starred_In natural "
+                + "join Actor where actor_name='"
+                +actor+"';";
+        
+        StringBuilder res = new StringBuilder();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                res.append(rs.getString("movie_name"));
+                res.append("~");
+                res.append(rs.getString("release_date"));
+                res.append("~");
+                res.append(rs.getString("rating"));
+                res.append("~");
+                res.append(rs.getString("quantity"));
+                res.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+            
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }

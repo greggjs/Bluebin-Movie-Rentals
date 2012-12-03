@@ -149,10 +149,13 @@ public class SearchResults extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         rentMovie();
+        main.searchResultsFrame = null;
+        main.searchFrame.setVisible(true);
         data = null;
         model = new DefaultTableModel(data, col);
         jTable1.setModel(model);
         fillTable();
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -254,7 +257,6 @@ public class SearchResults extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Out of Stock");
             return;
         }
-        
         
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
