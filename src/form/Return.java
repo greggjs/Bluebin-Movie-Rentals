@@ -189,11 +189,14 @@ public class Return extends javax.swing.JFrame {
     public void fillTable() {
         
         
-        String bank = "select * from Has_Rented where renter_phone=" + main.curr.getPhone()+";";
+        String bank = "select * from Has_Rented where "
+                + "renter_phone=" + main.curr.getPhone()+";";
         StringBuilder new_releases = new StringBuilder("");
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
@@ -216,7 +219,7 @@ public class Return extends javax.swing.JFrame {
         String new_releases_s = new_releases.toString();
         String [] rel_arr = new_releases_s.split("~");
         
-        int[] late_arr = new int[rel_arr.length/4];
+        long[] late_arr = new long[rel_arr.length/4];
         int[] movie_arr = new int[rel_arr.length/4];
         String[] movie_title = new String[rel_arr.length/4];
         int row = 0;
@@ -233,7 +236,9 @@ public class Return extends javax.swing.JFrame {
         for (int i = 0; i < movie_arr.length; i++) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+                Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3307/"
+                        + "fall2012?user=greggjs&password=greggjs");
                 Statement stm = conn.createStatement();
                 ResultSet rs = stm.executeQuery(bank+movie_arr[i]+";");
                 while(rs.next()) {
@@ -249,20 +254,18 @@ public class Return extends javax.swing.JFrame {
         }
         
         for (int i = 0; i < rel_arr.length-3; i+=4) {
-            int rent_day = 0, due_day = 0, days_late = 0;
             
-            rent_day = (Integer.parseInt(rel_arr[i+2].substring(0, 4))*365
-                    +getDaysInMonth(Integer.parseInt(rel_arr[i+2].substring(5, 7)))
-                    +Integer.parseInt(rel_arr[i+2].substring(8, 10)));
-
-            due_day = Integer.parseInt(rel_arr[i+3].substring(0, 4))*365
-                    +getDaysInMonth(Integer.parseInt(rel_arr[i+3].substring(5, 7)))
-                    +Integer.parseInt(rel_arr[i+3].substring(8, 10));
-      
-            days_late = due_day-rent_day;
+            long due_day = 0, curr_day=0, days_late = 0;
             
-            if (days_late > 7)
-                late_arr[row] = days_late - 7;
+            Date due=Date.valueOf(rel_arr[i+3]);
+            due_day=due.getTime();
+            
+            curr_day=System.currentTimeMillis();
+            
+            days_late = curr_day-due_day;
+            
+            if (days_late > 0)
+                late_arr[row] = days_late/86400000;
             else
                 late_arr[row] = 0;
             
@@ -296,16 +299,13 @@ public class Return extends javax.swing.JFrame {
                 return;
         }
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
-            PreparedStatement stm = conn.prepareStatement(bank);
-            stm.execute();
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        prepStm(bank);
+        
+        bank = "update Movie set quantity"
+                + "=quantity+1 where movie_name"
+                + "='"+movie_title+"';";
+        
+        prepStm(bank);
     }
     
     private int getDaysInMonth(int month) {
@@ -322,6 +322,22 @@ public class Return extends javax.swing.JFrame {
             month--;
         }
         return sum;
+    }
+    
+    private void prepStm(String bank) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+            err.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;

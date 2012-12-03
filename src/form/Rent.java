@@ -276,7 +276,8 @@ public class Rent extends javax.swing.JFrame {
             PreparedStatement stm = conn.prepareStatement(bank);
             stm.execute();
         } catch (SQLException err) {
-            System.out.println("problem has occurred");
+            JOptionPane.showMessageDialog(this, "You already rented this movie...");
+            return;
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }

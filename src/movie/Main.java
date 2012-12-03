@@ -50,7 +50,7 @@ public class Main {
         loginAdminFrame = new AdminLogIn(this);
         newAccountFrame = new NewAccountPage(this);
         movieStatusFrame = new MovieStatus(this);
-        rentFrame = new Rent(this);
+        //rentFrame = new Rent(this);
         renterStatusFrame = new RenterStatus(this);
         //returnFrame = new Return(this);
         addMovieFrame = new AddMovie(this);
