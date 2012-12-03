@@ -222,6 +222,7 @@ public class AdminLogIn extends javax.swing.JFrame {
         this.setVisible(false);
         MovieTitleField.setText(null);
         RenterPhoneField.setText(null);
+        main.movieStatusFrame = new MovieStatus(main);
         main.movieStatusFrame.id = movie_id;
         main.movieStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
