@@ -236,7 +236,7 @@ public class MainFrame extends javax.swing.JFrame {
           this.PasswordField.setText("");
           return;
       }
-      if (pwd_check==null) {
+      if (!pwd_check.equals(pwd)) {
           JOptionPane.showMessageDialog(this, "Invalid Password\nError: UsrFoundPwdInvalid");
           this.PasswordField.setText("");
       }
@@ -251,6 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
           main.loginUserFrame.setVisible(true);
           
       }
+    
     }//GEN-LAST:event_jButton2ActionPerformed
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
