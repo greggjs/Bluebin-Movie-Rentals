@@ -56,12 +56,12 @@ public class UpdateUser extends javax.swing.JFrame {
         NewCCField = new javax.swing.JTextField();
         OldPWField = new javax.swing.JPasswordField();
         NewPWField = new javax.swing.JPasswordField();
-        ConfirmPWField = new javax.swing.JTextField();
         UpdatePhone = new javax.swing.JButton();
         UpdateCC = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         ChangePW = new javax.swing.JButton();
         Cancel = new javax.swing.JButton();
+        ConfirmPWField = new javax.swing.JPasswordField();
 
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -110,8 +110,6 @@ public class UpdateUser extends javax.swing.JFrame {
 
         NewPWField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        ConfirmPWField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
         UpdatePhone.setText("Update");
         UpdatePhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +139,8 @@ public class UpdateUser extends javax.swing.JFrame {
                 CancelActionPerformed(evt);
             }
         });
+
+        ConfirmPWField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -182,11 +182,11 @@ public class UpdateUser extends javax.swing.JFrame {
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                             .add(jPanel1Layout.createSequentialGroup()
                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .add(ConfirmPWField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 165, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .add(ChangePW, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 99, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                .add(0, 0, Short.MAX_VALUE))))))))
+                                                .add(0, 0, Short.MAX_VALUE))
+                                            .add(jPanel1Layout.createSequentialGroup()
+                                                .add(51, 51, 51)
+                                                .add(ConfirmPWField))))))))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
@@ -286,9 +286,7 @@ public class UpdateUser extends javax.swing.JFrame {
     private void UpdatePhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdatePhoneActionPerformed
         // TODO add your handling code here:
         updatePhone();
-        JOptionPane.showMessageDialog(this,
-                "Successfully Updated Phone", 
-                "Success", JOptionPane.INFORMATION_MESSAGE);
+        
         getCC();
         PhoneLabel.setText("On File: " + phone);
         NewPhoneField.setText("");
@@ -297,9 +295,7 @@ public class UpdateUser extends javax.swing.JFrame {
     private void UpdateCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateCCActionPerformed
         // TODO add your handling code here:
         updateCC();
-        JOptionPane.showMessageDialog(this,
-                "Successfully Updated Credit Card", 
-                "Success", JOptionPane.INFORMATION_MESSAGE);
+        
         getCC();
         CCLabel.setText("On File: " + credit_card);
         NewCCField.setText("");
@@ -308,6 +304,10 @@ public class UpdateUser extends javax.swing.JFrame {
     private void ChangePWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangePWActionPerformed
         // TODO add your handling code here:
         updatePW();
+        
+        OldPWField.setText("");
+        NewPWField.setText("");
+        ConfirmPWField.setText("");
     }//GEN-LAST:event_ChangePWActionPerformed
 
     /**
@@ -339,7 +339,57 @@ public class UpdateUser extends javax.swing.JFrame {
     }
     
     public void updatePW() {
+        char[] old_pw_arr, new_pw_arr, confirm_pw_arr;
+        String check = null, test = null, bank, old_pw, new_pw, confirm_pw;
+        old_pw_arr = OldPWField.getPassword();
+        old_pw = new String(old_pw_arr);
+        new_pw_arr = NewPWField.getPassword();
+        new_pw = new String(new_pw_arr);
+        confirm_pw_arr = ConfirmPWField.getPassword();
+        confirm_pw = new String(confirm_pw_arr);
         
+        
+        if (old_pw == null || new_pw==null 
+                || confirm_pw==null) {
+            JOptionPane.showMessageDialog(this,
+                    "Please fill out all fields");
+            return;
+        }
+        else if (old_pw.length() > 20 || 
+                new_pw.length() > 20 || 
+                confirm_pw.length() > 20) {
+            JOptionPane.showMessageDialog(this,
+                    "One field is too long for a Password");
+            return;
+        }
+        
+        bank = "select password from Renter where "
+                + "renter_phone='"+phone+"';";
+        test = selectStm(bank, "password");
+        if (!(old_pw.equals(test))) {
+            JOptionPane.showMessageDialog(this,
+                    "Incorrect Old Password");
+            return;
+        }
+        else if (new_pw.equals(test)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a new Password");
+            return;
+        }
+        else if (!(new_pw.equals(confirm_pw))) {
+            JOptionPane.showMessageDialog(this,
+                    "Please Ensure you Confirm "
+                    + "your Password Correctly");
+            return;
+        }
+        
+        bank = "update Renter set password = '"+new_pw
+                +"' where renter_phone = '"+phone+"';";
+        prepStm(bank);
+        
+        JOptionPane.showMessageDialog(this,
+                "Successfully Updated Password", 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void updatePhone() {
@@ -387,7 +437,12 @@ public class UpdateUser extends javax.swing.JFrame {
                 test+"' where renter_phone='"+phone+"';";
         prepStm(bank);
         
+        JOptionPane.showMessageDialog(this,
+                "Successfully Updated Phone", 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+        
         phone = test;
+        main.curr.setPhone(test);
     }
     
     public void updateCC() {
@@ -433,6 +488,10 @@ public class UpdateUser extends javax.swing.JFrame {
                 +main.curr.getPhone()+"';";
         prepStm(bank);
         
+        JOptionPane.showMessageDialog(this,
+                "Successfully Updated Credit Card", 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+        
     }
     
     public void prepStm(String bank) {
@@ -476,7 +535,7 @@ public class UpdateUser extends javax.swing.JFrame {
     private javax.swing.JLabel CCLabel;
     private javax.swing.JButton Cancel;
     private javax.swing.JButton ChangePW;
-    private javax.swing.JTextField ConfirmPWField;
+    private javax.swing.JPasswordField ConfirmPWField;
     private javax.swing.JTextField NewCCField;
     private javax.swing.JPasswordField NewPWField;
     private javax.swing.JTextField NewPhoneField;

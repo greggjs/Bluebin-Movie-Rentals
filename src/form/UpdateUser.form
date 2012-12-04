@@ -91,12 +91,12 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
                                                   <EmptySpace max="32767" attributes="0"/>
-                                                  <Component id="ConfirmPWField" min="-2" pref="165" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <EmptySpace max="32767" attributes="0"/>
                                                   <Component id="ChangePW" min="-2" pref="99" max="-2" attributes="0"/>
                                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                                                  <Component id="ConfirmPWField" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -295,11 +295,6 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="ConfirmPWField">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="UpdatePhone">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update"/>
@@ -338,6 +333,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="ConfirmPWField">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
