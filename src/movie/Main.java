@@ -24,6 +24,7 @@ public class Main {
     public Search searchFrame;
     public SearchResults searchResultsFrame;
     public AddMovie addMovieFrame;
+    public UpdateUser updateUserFrame;
     
     public ArrayList<Movie> movies = new ArrayList<Movie>();
     public Renter curr = new Renter();
@@ -46,16 +47,8 @@ public class Main {
     }
     public void run() {
         frame = new MainFrame(this);
-        //loginUserFrame = new UserLogIn(this);
-        //loginAdminFrame = new AdminLogIn(this);
         newAccountFrame = new NewAccountPage(this);
-        //movieStatusFrame = new MovieStatus(this);
-        //rentFrame = new Rent(this);
-        //renterStatusFrame = new RenterStatus(this);
-        //returnFrame = new Return(this);
-        //addMovieFrame = new AddMovie(this);
-        //searchFrame = new Search(this);
-        //searchResultsFrame = new SearchResults(this);
+        
         frame.setVisible(true);
     }
 }

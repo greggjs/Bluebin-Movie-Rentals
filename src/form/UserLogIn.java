@@ -92,6 +92,11 @@ public class UserLogIn extends javax.swing.JFrame {
         NameLabel.setText("Hello " + main.curr.getName());
 
         jButton4.setText("Update Profile");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -182,6 +187,13 @@ public class UserLogIn extends javax.swing.JFrame {
         main.rentFrame = new Rent(main);
         main.rentFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        main.updateUserFrame = new UpdateUser(main);
+        main.updateUserFrame.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
     * @param args the command line arguments
