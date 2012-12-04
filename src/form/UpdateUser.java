@@ -286,6 +286,12 @@ public class UpdateUser extends javax.swing.JFrame {
     private void UpdatePhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdatePhoneActionPerformed
         // TODO add your handling code here:
         updatePhone();
+        JOptionPane.showMessageDialog(this,
+                "Successfully Updated Phone", 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+        getCC();
+        PhoneLabel.setText("On File: " + phone);
+        NewPhoneField.setText("");
     }//GEN-LAST:event_UpdatePhoneActionPerformed
 
     private void UpdateCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateCCActionPerformed
@@ -337,57 +343,86 @@ public class UpdateUser extends javax.swing.JFrame {
     }
     
     public void updatePhone() {
+        String test = NewPhoneField.getText();
         
-    }
-    
-    public void updateCC() {
-        String test = NewCCField.getText();
-        String select_bank, bank, check = null;
         try {
             Long.parseLong(test);
-        } catch(NumberFormatException err) {
+            if (test.equals("")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter your new phone number"
+                    + "\nError: NullPhone");
+                return;
+            }
+            else if (test.length()!=10) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter a vlid phone number"
+                    + "\nExample: 5555555555"
+                    + "\nError: IncrtPhone");
+                return;
+            }
+        } catch (NumberFormatException err) {
             JOptionPane.showMessageDialog(this,
                     "Please enter a valid phone "
                     + "number\nExample: 5555555555"
                     + "\nError: NumFormat");
             return;
         }
-        if (test.equals("")) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter your credit card"
-                    + "\nError: NullCrCd");
+        
+        String bank = "select renter_phone from "
+                + "Renter where renter_name = '"+
+                main.curr.getName()+"';";
+        String check = selectStm(bank, "renter_phone");
+        
+        if (test.equals(check)) {
+            JOptionPane.showMessageDialog(
+                    this, "Please enter a new Phone Number");
             return;
         }
-        else if (test.length()!=16) {
-            JOptionPane.showMessageDialog(this, 
+        
+        bank = "update Renter set renter_phone='"+
+                test+"' where renter_phone='"+phone+"';";
+        prepStm(bank);
+        
+        bank = "update Has_Rented set renter_phone='"+
+                test+"' where renter_phone='"+phone+"';";
+        prepStm(bank);
+        
+        phone = test;
+    }
+    
+    public void updateCC() {
+        String test = NewCCField.getText();
+        String bank, check = null;
+        try {
+            Long.parseLong(test);
+            if (test.equals("")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter your credit card"
+                    + "\nError: NullCrCd");
+                return;
+            }
+            else if (test.length()!=16) {
+                JOptionPane.showMessageDialog(this, 
                     "Please enter a vlid credit card"
                     + "\nExample: 4444777788885555"
                     + "\nError: IncrtCrCd");
+                return;
+            }
+        } catch(NumberFormatException err) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid credit card "
+                    + "number\nExample: 5555444433332222"
+                    + "\nError: NumFormat");
             return;
         }
         
-        select_bank = "select credit_card from Renter"
+        bank = "select credit_card from Renter"
                 + " where renter_phone='"+
                 main.curr.getPhone()+"';";
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012?"
-                    + "user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(select_bank);
-            while (rs.next()) {
-                check = rs.getString("credit_card");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error 1");
-            return;
-        } catch (ClassNotFoundException err) {
-            System.out.println ("Problem!");
-        }
+        check = selectStm(bank, "credit_card");
         
-        if (check.equals(test)) {
+        if (test.equals(check)) {
             JOptionPane.showMessageDialog(
                     this, "Please enter a new Credit Card");
             return;
@@ -396,7 +431,11 @@ public class UpdateUser extends javax.swing.JFrame {
         bank = "update Renter set credit_card = '"+test
                 +"' where renter_phone = '"
                 +main.curr.getPhone()+"';";
+        prepStm(bank);
         
+    }
+    
+    public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -410,6 +449,27 @@ public class UpdateUser extends javax.swing.JFrame {
         } catch (ClassNotFoundException err) {
             System.out.println ("Problem!");
         }
+    }
+    
+    public String selectStm(String bank, String query) {
+        String check = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012?"
+                    + "user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while (rs.next()) {
+                check = rs.getString(query);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error 1");
+            return null;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+        return check;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
