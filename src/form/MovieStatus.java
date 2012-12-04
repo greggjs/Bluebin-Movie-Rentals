@@ -2,9 +2,11 @@ package form;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import movie.*;
 
@@ -56,7 +58,7 @@ public class MovieStatus extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        RenterTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -103,12 +105,12 @@ public class MovieStatus extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(model);
-        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jTable1);
+        RenterTable.setModel(model);
+        RenterTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setViewportView(RenterTable);
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Avalible Copys");
+        jLabel2.setText("Available Copys");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Rented Copys");
@@ -131,6 +133,11 @@ public class MovieStatus extends javax.swing.JFrame {
         TotalLabel.setText(""+total);
 
         jButton1.setText("Remove All Copies");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -215,6 +222,14 @@ public class MovieStatus extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        addCopies();
+        data=null;
+        model = new DefaultTableModel(data, col);
+        initialize();
+        AvailableLabels.setText(""+stock);  
+        RentedLabel.setText(""+rented);
+        TotalLabel.setText(""+total);
+        fillTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -232,6 +247,18 @@ public class MovieStatus extends javax.swing.JFrame {
         // TODO add your handling code here:
         fillTable();
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        removeAllCopies();
+        data=null;
+        model = new DefaultTableModel(data, col);
+        initialize();
+        AvailableLabels.setText(""+stock);
+        RentedLabel.setText(""+rented);
+        TotalLabel.setText(""+total);
+        fillTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -328,9 +355,65 @@ public class MovieStatus extends javax.swing.JFrame {
         }
     }
     
+    private void removeAllCopies() {
+        String bank = "update Movie set quantity=0 where movie_id="+id+";";
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove\n"
+                + "all copies of \""+title+"\"?", "Remove all Copies", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.NO_OPTION)
+            return;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(this, "You already rented this movie...");
+            return;
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        
+    }
+    
+    private void addCopies() {
+        int new_q=0;
+        while(true) {
+        try {
+            new_q = Integer.parseInt(JOptionPane.showInputDialog(
+                    this, "How many copies would you like to add?"));
+            break;
+            } catch (NumberFormatException err) {
+                JOptionPane.showMessageDialog(this, 
+                        "Please insert a valid quantity");
+            }   
+        }
+        String bank = "update Movie set quantity=quantity+"
+                +new_q+" where movie_id="+id+";";
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            System.out.println("SQL Error");
+            return;
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AvailableLabels;
     private javax.swing.JLabel RentedLabel;
+    private javax.swing.JTable RenterTable;
     private javax.swing.JLabel TitleLabel;
     private javax.swing.JLabel TotalLabel;
     private javax.swing.JButton jButton1;
@@ -343,7 +426,6 @@ public class MovieStatus extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
 }
