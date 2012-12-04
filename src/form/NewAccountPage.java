@@ -264,7 +264,9 @@ public class NewAccountPage extends javax.swing.JFrame {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012?"
+                    + "user=greggjs&password=greggjs");
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(select_bank);
             while (rs.next()) {
@@ -284,7 +286,6 @@ public class NewAccountPage extends javax.swing.JFrame {
                         "jdbc:mysql://localhost:3307/fall2012"
                         + "?user=greggjs&password=greggjs");
                 PreparedStatement stm = conn.prepareStatement(bank);
-                System.out.println("Prepared Statement");
                 stm.execute();
             } catch (SQLException e) {
                 System.out.println("SQL Error 2");

@@ -4,6 +4,13 @@
  */
 package form;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import movie.*;
 
 /**
@@ -51,6 +58,7 @@ public class UpdateUser extends javax.swing.JFrame {
         ChangePW = new javax.swing.JButton();
         Cancel = new javax.swing.JButton();
 
+        setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -275,19 +283,106 @@ public class UpdateUser extends javax.swing.JFrame {
 
     private void UpdatePhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdatePhoneActionPerformed
         // TODO add your handling code here:
+        updatePhone();
     }//GEN-LAST:event_UpdatePhoneActionPerformed
 
     private void UpdateCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateCCActionPerformed
         // TODO add your handling code here:
+        updateCC();
+        JOptionPane.showMessageDialog(this,
+                "Successfully Updated Credit Card", 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+        NewCCField.setText("");
     }//GEN-LAST:event_UpdateCCActionPerformed
 
     private void ChangePWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangePWActionPerformed
         // TODO add your handling code here:
+        updatePW();
     }//GEN-LAST:event_ChangePWActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+    public void updatePW() {
+        
+    }
+    
+    public void updatePhone() {
+        
+    }
+    
+    public void updateCC() {
+        String test = NewCCField.getText();
+        String select_bank, bank, check = null;
+        try {
+            Long.parseLong(test);
+        } catch(NumberFormatException err) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid phone "
+                    + "number\nExample: 5555555555"
+                    + "\nError: NumFormat");
+            return;
+        }
+        if (test.equals("")) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter your credit card"
+                    + "\nError: NullCrCd");
+            return;
+        }
+        else if (test.length()!=16) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter a vlid credit card"
+                    + "\nExample: 4444777788885555"
+                    + "\nError: IncrtCrCd");
+            return;
+        }
+        
+        select_bank = "select credit_card from Renter"
+                + " where renter_phone='"+
+                main.curr.getPhone()+"';";
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012?"
+                    + "user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(select_bank);
+            while (rs.next()) {
+                check = rs.getString("credit_card");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error 1");
+            return;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+        
+        if (check.equals(test)) {
+            JOptionPane.showMessageDialog(
+                    this, "Please enter a new Credit Card");
+            return;
+        }
+        
+        bank = "update Renter set credit_card = '"+test
+                +"' where renter_phone = '"
+                +main.curr.getPhone()+"';";
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3307/fall2012"
+                        + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException e) {
+            System.out.println("SQL Error 2");
+            return;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CCLabel;
