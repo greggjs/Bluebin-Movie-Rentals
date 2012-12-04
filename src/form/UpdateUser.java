@@ -19,10 +19,15 @@ import movie.*;
  */
 public class UpdateUser extends javax.swing.JFrame {
     Main main;
+    String phone;
+    String credit_card;
     /**
      * Creates new form UpdateUser
      */
     public UpdateUser(Main main) {
+        System.out.println(main.curr.getPhone());
+        this.phone = main.curr.getPhone();
+        getCC();
         initComponents();
         this.main = main;
     }
@@ -81,10 +86,10 @@ public class UpdateUser extends javax.swing.JFrame {
         jLabel4.setText("Change Password");
 
         CCLabel.setForeground(new java.awt.Color(255, 255, 255));
-        CCLabel.setText("jLabel5");
+        CCLabel.setText("On File: "+credit_card);
 
         PhoneLabel.setForeground(new java.awt.Color(255, 255, 255));
-        PhoneLabel.setText("jLabel6");
+        PhoneLabel.setText("On File: "+ phone);
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -192,10 +197,7 @@ public class UpdateUser extends javax.swing.JFrame {
                                 .add(jLabel2))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .add(jLabel3)))
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(jLabel3))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(137, 137, 137)
                                 .add(UpdatePhone))
@@ -292,6 +294,8 @@ public class UpdateUser extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this,
                 "Successfully Updated Credit Card", 
                 "Success", JOptionPane.INFORMATION_MESSAGE);
+        getCC();
+        CCLabel.setText("On File: " + credit_card);
         NewCCField.setText("");
     }//GEN-LAST:event_UpdateCCActionPerformed
 
@@ -303,6 +307,30 @@ public class UpdateUser extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public void getCC() {
+        String bank = "select credit_card "
+                + "from Renter where "
+                + "renter_phone='"+phone+"';";
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012?"
+                    + "user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while (rs.next()) {
+                credit_card = rs.getString("credit_card");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error 1");
+            return;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+        
+        
+    }
     
     public void updatePW() {
         
