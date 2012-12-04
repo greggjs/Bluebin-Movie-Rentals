@@ -189,11 +189,15 @@ public class Rent extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public void fillTable() {
-        String bank = "select * from Movie where release_date > '2000-01-01' order by release_date desc;";
+        String bank = "select * from Movie where "
+                + "release_date > '2000-01-01' "
+                + "order by release_date desc;";
         StringBuilder new_releases = new StringBuilder("");
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
@@ -217,7 +221,8 @@ public class Rent extends javax.swing.JFrame {
         String [] rel_arr = new_releases_s.split("~");
         int row = 0;
         for (int i = 0; i < rel_arr.length-3; i+=4) {
-            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
+            model.insertRow(row, new Object[]{rel_arr[i],
+                rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
             row++;
         }
     }
@@ -233,27 +238,12 @@ public class Rent extends javax.swing.JFrame {
         String movie_q = "select movie_id from Movie where movie_name='"+movie_title+"'";
         String movie_id = null;
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/"
-                    + "fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(movie_q);
-            while(rs.next()) {
-                movie_id = rs.getString("movie_id");
-            }
-
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        movie_id = selectStm(movie_q, "movie_id");
         
         int choice = JOptionPane.showConfirmDialog(this, 
-                "Charge this to your credit card on file for this"
+                "Charge this to your credit card $3.00 on file for this"
                 + " rental?",
-                "Rent New Release", JOptionPane.YES_NO_OPTION);
+                "Rent Movie", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.NO_OPTION)
             return;
         
@@ -268,19 +258,7 @@ public class Rent extends javax.swing.JFrame {
                 +main.curr.getPhone()+"', "+movie_id
                 +", '"+curr_date+"','"+due_date+"');";
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            PreparedStatement stm = conn.prepareStatement(bank);
-            stm.execute();
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(this, "You already rented this movie...");
-            return;
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        prepStm(bank);
         
         int quantity = Integer.parseInt(
                 (String)(MovieTable.getModel()
@@ -291,10 +269,13 @@ public class Rent extends javax.swing.JFrame {
             return;
         }
         
-        
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
+        prepStm(bank);
         
+    }
+    
+    public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -307,6 +288,27 @@ public class Rent extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
+    }
+    
+    public String selectStm(String bank, String type) {
+        String res = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                res = rs.getString(type);
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return res;
     }
     
     /**

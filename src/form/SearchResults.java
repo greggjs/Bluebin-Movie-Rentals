@@ -200,22 +200,7 @@ public class SearchResults extends javax.swing.JFrame {
         String movie_q = "select movie_id from Movie where movie_name='"+movie_title+"'";
         String movie_id = null;
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/"
-                    + "fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(movie_q);
-            while(rs.next()) {
-                movie_id = rs.getString("movie_id");
-            }
-
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        movie_id = selectStm(movie_q, "movie_id");
         
         int choice = JOptionPane.showConfirmDialog(this, 
                 "Charge this to your credit card on file for this"
@@ -235,19 +220,7 @@ public class SearchResults extends javax.swing.JFrame {
                 +main.curr.getPhone()+"', "+movie_id
                 +", '"+curr_date+"','"+due_date+"');";
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            PreparedStatement stm = conn.prepareStatement(bank);
-            stm.execute();
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(this, "You already rented this movie...");
-            return;
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        prepStm(bank);
         
         int quantity = Integer.parseInt(
                 (String)(jTable1.getModel()
@@ -260,7 +233,11 @@ public class SearchResults extends javax.swing.JFrame {
         
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
+        prepStm(bank);
         
+    }
+    
+    public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -273,6 +250,27 @@ public class SearchResults extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
+    }
+    
+    public String selectStm(String bank, String type) {
+        String res = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                res = rs.getString(type);
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return res;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

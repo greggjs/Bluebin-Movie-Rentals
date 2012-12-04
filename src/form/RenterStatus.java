@@ -191,30 +191,7 @@ public class RenterStatus extends javax.swing.JFrame {
         
         String bank = "select * from Has_Rented where "
                 + "renter_phone=" + phone +";";
-        StringBuilder new_releases = new StringBuilder("");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/"
-                    + "fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            while(rs.next()) {
-                new_releases.append(rs.getString("renter_phone"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("movie_id"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("rent_date"));
-                new_releases.append("~");
-                new_releases.append(rs.getString("due_date"));
-                new_releases.append("~");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        StringBuilder new_releases = getMovies(bank);
         
         String new_releases_s = new_releases.toString();
         String [] rel_arr = new_releases_s.split("~");
@@ -234,23 +211,8 @@ public class RenterStatus extends javax.swing.JFrame {
         row = 0;
         
         for (int i = 0; i < movie_arr.length; i++) {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3307/"
-                        + "fall2012?user=greggjs&password=greggjs");
-                Statement stm = conn.createStatement();
-                ResultSet rs = stm.executeQuery(bank+movie_arr[i]+";");
-                while(rs.next()) {
-                    movie = rs.getString("movie_name");
-                }
-
-            } catch (SQLException err) {
-                System.out.println("problem has occurred");
-            } catch (ClassNotFoundException e) {
-                System.out.println ("cannot find driver!");
-            }
-            movie_title[i] = movie;
+            
+            movie_title[i] = getMovie(bank, movie_arr[i]);
         }
         
         for (int i = 0; i < rel_arr.length-3; i+=4) {
@@ -277,6 +239,55 @@ public class RenterStatus extends javax.swing.JFrame {
     }
    
 
+    public String getMovie(String bank, int id) {
+        String movie = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                 "jdbc:mysql://localhost:3307/"
+                   + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank+id+";");
+            while(rs.next()) {
+                movie = rs.getString("movie_name");
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return movie;
+    }
+    
+    public StringBuilder getMovies(String bank) {
+        StringBuilder res = new StringBuilder("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                res.append(rs.getString("renter_phone"));
+                res.append("~");
+                res.append(rs.getString("movie_id"));
+                res.append("~");
+                res.append(rs.getString("rent_date"));
+                res.append("~");
+                res.append(rs.getString("due_date"));
+                res.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return res;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
