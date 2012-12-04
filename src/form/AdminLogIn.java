@@ -224,15 +224,44 @@ public class AdminLogIn extends javax.swing.JFrame {
             return;
         }
         
-        this.setVisible(false);
+        
         MovieTitleField.setText(null);
         RenterPhoneField.setText(null);
         main.movieStatusFrame = new MovieStatus(main, movie_id);
+        this.setVisible(false);
         main.movieStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        String phone = RenterPhoneField.getText();
+        String title_bank = "select renter_name from Renter where renter_phone='"+phone+"';";
+        String name = null;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(title_bank);
+            while(rs.next()) {
+                name = rs.getString("renter_name");
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        if (name==null) {
+            JOptionPane.showMessageDialog(this, "No renter exists in database.\nError: NullId");
+            return;
+        }
+        
+        main.renterStatusFrame = new RenterStatus(main, phone, name);
         this.setVisible(false);
         main.renterStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed

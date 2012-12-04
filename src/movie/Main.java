@@ -51,7 +51,7 @@ public class Main {
         newAccountFrame = new NewAccountPage(this);
         //movieStatusFrame = new MovieStatus(this);
         //rentFrame = new Rent(this);
-        renterStatusFrame = new RenterStatus(this);
+        //renterStatusFrame = new RenterStatus(this);
         //returnFrame = new Return(this);
         addMovieFrame = new AddMovie(this);
         //searchFrame = new Search(this);

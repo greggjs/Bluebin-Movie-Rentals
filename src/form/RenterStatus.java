@@ -1,5 +1,12 @@
 package form;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 import movie.*;
 
 /*
@@ -19,9 +26,19 @@ import movie.*;
  */
 public class RenterStatus extends javax.swing.JFrame {
     Main main;
+    String phone;
+    String name;
+    Object[][] data = null;
+    String col[] = new String [] {
+                "Title", "Rent Date", "Due Date", "Days Late"
+            };
+    DefaultTableModel model;
     /** Creates new  */
-    public RenterStatus(Main main) {
+    public RenterStatus(Main main, String phone, String name) {
         this.main = main;
+        this.phone = phone;
+        this.name = name;
+        model = new DefaultTableModel(data, col);
         initComponents();
     }
 
@@ -37,7 +54,6 @@ public class RenterStatus extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -49,6 +65,9 @@ public class RenterStatus extends javax.swing.JFrame {
         setTitle("Renter Status");
         setBounds(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2 - 200, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2-200, 0, 0);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
@@ -64,40 +83,14 @@ public class RenterStatus extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jButton2.setBackground(new java.awt.Color(0, 100, 123));
-        jButton2.setText("Cancel");
+        jButton2.setText("OK");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(0, 100, 123));
-        jButton3.setText("OK");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title", "Rent Date", "Due Date", "Days Late"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        jTable1.setModel(model);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jTable1);
 
@@ -106,11 +99,11 @@ public class RenterStatus extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Status for <Phone #>");
+        jLabel5.setText("Status for " + phone);
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("<String>");
+        jLabel6.setText(name);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,11 +113,7 @@ public class RenterStatus extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(233, 233, 233)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -132,7 +121,10 @@ public class RenterStatus extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(134, 134, 134)
-                                .addComponent(jLabel6)))
+                                .addComponent(jLabel6))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -150,12 +142,10 @@ public class RenterStatus extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,29 +164,121 @@ public class RenterStatus extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        main.renterStatusFrame = null;
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
+        main.renterStatusFrame = null;
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        fillTable();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
     * @param args the command line arguments
     */
     
+    
+    public void fillTable() {
+        
+        String bank = "select * from Has_Rented where "
+                + "renter_phone=" + phone +";";
+        StringBuilder new_releases = new StringBuilder("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while(rs.next()) {
+                new_releases.append(rs.getString("renter_phone"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("movie_id"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("rent_date"));
+                new_releases.append("~");
+                new_releases.append(rs.getString("due_date"));
+                new_releases.append("~");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        String new_releases_s = new_releases.toString();
+        String [] rel_arr = new_releases_s.split("~");
+        
+        long[] late_arr = new long[rel_arr.length/4];
+        int[] movie_arr = new int[rel_arr.length/4];
+        String[] movie_title = new String[rel_arr.length/4];
+        int row = 0;
+        bank = new String("select movie_name from Movie where movie_id=");
+        String movie = null;
+        
+        for (int i = 0; i < rel_arr.length-3; i+=4) {
+            movie_arr[row] = Integer.parseInt(rel_arr[i+1]);
+            row++;
+        }
+        
+        row = 0;
+        
+        for (int i = 0; i < movie_arr.length; i++) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3307/"
+                        + "fall2012?user=greggjs&password=greggjs");
+                Statement stm = conn.createStatement();
+                ResultSet rs = stm.executeQuery(bank+movie_arr[i]+";");
+                while(rs.next()) {
+                    movie = rs.getString("movie_name");
+                }
+
+            } catch (SQLException err) {
+                System.out.println("problem has occurred");
+            } catch (ClassNotFoundException e) {
+                System.out.println ("cannot find driver!");
+            }
+            movie_title[i] = movie;
+        }
+        
+        for (int i = 0; i < rel_arr.length-3; i+=4) {
+            
+            long due_day = 0, curr_day=0, days_late = 0;
+            
+            Date due=Date.valueOf(rel_arr[i+3]);
+            due_day=due.getTime();
+            
+            curr_day=System.currentTimeMillis();
+            
+            days_late = curr_day-due_day;
+            
+            if (days_late > 0)
+                late_arr[row] = days_late/86400000;
+            else
+                late_arr[row] = 0;
+            
+            model.insertRow(row, new Object[]{movie_title[row],
+                rel_arr[i+2], rel_arr[i+3], late_arr[row]});
+            row++;
+        }
+        
+    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
