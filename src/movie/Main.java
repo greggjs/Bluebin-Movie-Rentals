@@ -53,7 +53,7 @@ public class Main {
         //rentFrame = new Rent(this);
         //renterStatusFrame = new RenterStatus(this);
         //returnFrame = new Return(this);
-        addMovieFrame = new AddMovie(this);
+        //addMovieFrame = new AddMovie(this);
         //searchFrame = new Search(this);
         //searchResultsFrame = new SearchResults(this);
         frame.setVisible(true);

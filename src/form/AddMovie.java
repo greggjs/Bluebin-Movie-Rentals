@@ -4,6 +4,14 @@
  */
 package form;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import movie.*;
 
 /**
@@ -12,11 +20,16 @@ import movie.*;
  */
 public class AddMovie extends javax.swing.JFrame {
     Main main;
+    int index;
+    DefaultComboBoxModel model1 = new DefaultComboBoxModel();
+    DefaultComboBoxModel model2 = new DefaultComboBoxModel();
+    DefaultComboBoxModel model3 = new DefaultComboBoxModel();
     /**
      * Creates new form AddMovie
      */
     public AddMovie(Main main) {
         this.main = main;
+        initialize();
         initComponents();
     }
 
@@ -38,22 +51,26 @@ public class AddMovie extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jTextField9 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        CategoryBox1 = new javax.swing.JComboBox();
+        QuantityField = new javax.swing.JTextField();
+        ReleaseYear = new javax.swing.JTextField();
+        TitleField = new javax.swing.JTextField();
+        ActorField1 = new javax.swing.JTextField();
+        ActorField2 = new javax.swing.JTextField();
+        ActorField3 = new javax.swing.JTextField();
+        ActorField4 = new javax.swing.JTextField();
+        GRadio = new javax.swing.JRadioButton();
+        PGRadio = new javax.swing.JRadioButton();
+        PG13Radio = new javax.swing.JRadioButton();
+        RRadio = new javax.swing.JRadioButton();
+        NC17Radio = new javax.swing.JRadioButton();
+        ActorField5 = new javax.swing.JTextField();
+        AddMovieButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        CategoryBox2 = new javax.swing.JComboBox();
+        CategoryBox3 = new javax.swing.JComboBox();
+        ReleaseMonth = new javax.swing.JTextField();
+        ReleaseDay = new javax.swing.JTextField();
 
         jTextField6.setText("jTextField6");
 
@@ -101,39 +118,44 @@ public class AddMovie extends javax.swing.JFrame {
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Title Actors");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CategoryBox1.setModel(model1);
 
-        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton1.setText("G");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        GRadio.setForeground(new java.awt.Color(255, 255, 255));
+        GRadio.setText("G");
+        GRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                GRadioActionPerformed(evt);
             }
         });
 
-        jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton2.setText("PG");
+        PGRadio.setForeground(new java.awt.Color(255, 255, 255));
+        PGRadio.setText("PG");
 
-        jRadioButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton3.setText("PG-13");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+        PG13Radio.setForeground(new java.awt.Color(255, 255, 255));
+        PG13Radio.setText("PG-13");
+        PG13Radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
+                PG13RadioActionPerformed(evt);
             }
         });
 
-        jRadioButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton4.setText("R");
+        RRadio.setForeground(new java.awt.Color(255, 255, 255));
+        RRadio.setText("R");
 
-        jRadioButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton5.setText("NC-17");
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+        NC17Radio.setForeground(new java.awt.Color(255, 255, 255));
+        NC17Radio.setText("NC-17");
+        NC17Radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
+                NC17RadioActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Add Movie");
+        AddMovieButton.setText("Add Movie");
+        AddMovieButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddMovieButtonActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -141,6 +163,10 @@ public class AddMovie extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        CategoryBox2.setModel(model2);
+
+        CategoryBox3.setModel(model3);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -167,15 +193,23 @@ public class AddMovie extends javax.swing.JFrame {
                                                 .add(3, 3, 3)
                                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                                     .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(jButton1)
+                                                        .add(AddMovieButton)
                                                         .add(31, 31, 31)
                                                         .add(jButton2))
-                                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                                        .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 165, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                        .add(jTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 162, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
-                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                        .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel11)))
+                                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox1, 0, 165, Short.MAX_VALUE))))))
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                            .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                                .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel11)))
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 53, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -187,27 +221,27 @@ public class AddMovie extends javax.swing.JFrame {
                                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                                     .add(jLabel10)
                                                     .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(jRadioButton2)
+                                                        .add(PGRadio)
                                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                                        .add(jRadioButton5))
-                                                    .add(jRadioButton3)
+                                                        .add(NC17Radio))
+                                                    .add(PG13Radio)
                                                     .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(jRadioButton1)
+                                                        .add(GRadio)
                                                         .add(18, 18, 18)
-                                                        .add(jRadioButton4)))))
+                                                        .add(RRadio)))))
                                         .add(0, 0, Short.MAX_VALUE))
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(27, 27, 27)
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jTextField7)
-                                            .add(jTextField5)
-                                            .add(jTextField8)
-                                            .add(jTextField9)))))
+                                            .add(org.jdesktop.layout.GroupLayout.TRAILING, ActorField3)
+                                            .add(ActorField2)
+                                            .add(ActorField4)
+                                            .add(ActorField5)))))
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
                                 .add(16, 16, 16)
-                                .add(jTextField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 217, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(TitleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 217, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 51, Short.MAX_VALUE)
-                                .add(jTextField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 205, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(ActorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 205, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(47, 47, 47)))
                 .addContainerGap())
         );
@@ -222,45 +256,55 @@ public class AddMovie extends javax.swing.JFrame {
                     .add(jLabel12))
                 .add(20, 20, 20)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTextField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(TitleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ActorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel9)
-                    .add(jTextField5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(ActorField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTextField7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(ActorField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTextField8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ActorField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel11))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextField9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ActorField5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel8)
                     .add(jLabel10))
-                .add(18, 18, 18)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jRadioButton1)
-                    .add(jRadioButton4))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
+                        .add(6, 6, 6)
+                        .add(CategoryBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(CategoryBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(CategoryBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jRadioButton2)
-                            .add(jRadioButton5))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jRadioButton3))
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(jButton1)
-                        .add(jButton2)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                            .add(AddMovieButton)
+                            .add(jButton2))
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(18, 18, 18)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(GRadio)
+                            .add(RRadio))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(PGRadio)
+                            .add(NC17Radio))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(PG13Radio)
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -282,32 +326,265 @@ public class AddMovie extends javax.swing.JFrame {
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void GRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GRadioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_GRadioActionPerformed
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+    private void PG13RadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PG13RadioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
+    }//GEN-LAST:event_PG13RadioActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void NC17RadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NC17RadioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
+    }//GEN-LAST:event_NC17RadioActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        main.addMovieFrame = null;
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void AddMovieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMovieButtonActionPerformed
+        // TODO add your handling code here:
+        addMovie();
+        JOptionPane.showMessageDialog(this, "Successfully Added Movie",
+                "Movie Added", JOptionPane.INFORMATION_MESSAGE);
+        main.addMovieFrame.setVisible(false);
+        main.addMovieFrame = null;
+        main.loginAdminFrame.setVisible(true);
+        
+    }//GEN-LAST:event_AddMovieButtonActionPerformed
+
+    public void initialize() {
+        String bank = "select * from Category;";
+        initializeComboBox(bank, model1);
+        initializeComboBox(bank, model2);
+        initializeComboBox(bank, model3);
+    }
+    
+    public void initializeComboBox(String bank, DefaultComboBoxModel model) {
+        
+        model.addElement("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                model.addElement(rs.getString("category_name"));                
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+    }
+    
+    public void addMovie() {
+        String title = TitleField.getText();
+        
+        if (title==null || title.length() > 80) {
+            JOptionPane.showMessageDialog(this, "Invalid Entry for Title");
+            return;
+        }
+                  
+        int year = 0, month = 0, day = 0, quantity = 0;
+        try {
+            year = Integer.parseInt(ReleaseYear.getText());
+            month = Integer.parseInt(ReleaseMonth.getText());
+            day = Integer.parseInt(ReleaseDay.getText());
+            quantity = Integer.parseInt(QuantityField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Input for Release Date"
+                    + "\nor Quantity");
+            return;
+        }
+        
+        String rel_date = year + "-" + month + "-" + day;
+        
+        String[] categories = new String[3];
+        categories[0]= (String)CategoryBox1.getSelectedItem();
+        categories[1]= (String)CategoryBox2.getSelectedItem();
+        categories[2]= (String)CategoryBox3.getSelectedItem();
+        
+        String[] actors = new String[5];
+        actors[0] = ActorField1.getText();
+        actors[1] = ActorField2.getText();
+        actors[2] = ActorField3.getText();
+        actors[3] = ActorField4.getText();
+        actors[4] = ActorField5.getText();
+        
+        String rating = getRating();
+        if (rating==null) {
+            JOptionPane.showMessageDialog(this, "Invalid Input for Rating");
+            return;
+        }
+        
+        index = maxIndex("movie_id", "Movie");
+        
+        String bank = "insert into Movie values ("+index
+                +",'"+title+"', '"
+                +rel_date+"', '"+rating+"', "+quantity+");";
+        insert(bank);
+        
+        insertActors(actors);
+        
+        insertCategories(categories);
+        
+        
+        
+    }
+    
+    public String getRating() {
+        
+        if (GRadio.isSelected())
+            return "G";
+        else if (PGRadio.isSelected())
+            return "PG";
+        else if (PG13Radio.isSelected())
+            return "PG13";
+        else if (RRadio.isSelected())
+            return "R";
+        else if (NC17Radio.isSelected())
+            return "NC17";
+        return null;
+            
+    }
+    
+    public int maxIndex(String type, String table) {
+        String bank = "select MAX("+type+") from "+table+";";
+        int index = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                index = rs.getInt("MAX("+type+")");                
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("index problem");
+            err.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return index+1;
+    }
+    
+    public void insert(String bank) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/"
+                    + "fall2012?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException err) {
+            System.out.println("insert problem");
+            err.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+    }
+    
+    public void insertActors(String[] actors) {
+        int insert_index;
+        for (int i = 0; i < actors.length; i++) {
+            if (actors[i]==null) {}
+            else {
+                String bank = "select actor_name from Actor where "
+                        + "actor_name='"+actors[i]+"';";
+                String result = search(bank, "actor_name");
+                if (result==null) {
+                    insert_index = maxIndex("actor_id", "Actor");
+                    bank = "insert into Actor values ("+insert_index
+                            +", '"+actors[i]+"');";
+                    insert(bank);
+                    bank = "insert into Starred_In values ("+insert_index
+                            + ", "+index+");";
+                    insert(bank);
+                }
+                else {
+                    bank = "select actor_id from Actor where actor_name"
+                            + " = '"+actors[i]+"';";
+                    int id = Integer.parseInt(search(bank, "actor_id"));
+                    bank = "insert into Starred_In values ("+id+", "+
+                            index+");";
+                    insert(bank);
+                }
+            }
+        }
+    }
+    
+    public void insertCategories(String[] categories) {
+        for (int i = 0; i < categories.length; i++) {
+            if (!(categories[i]==null)) {
+                String bank = "select category_id from Category where"
+                        + " category_name = '"+categories[i]+"';";
+                int cat_id = Integer.parseInt(search(bank, "category_id"));
+                bank = "insert into Has_Category values ("+cat_id
+                            +", "+index+");";
+                insert(bank);
+                
+            }
+        }
+    }
+    
+    public String search(String bank, String query) {
+        String res = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                res = rs.getString(query);
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("search problem");
+            err.printStackTrace();
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        return res;
+    }
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField ActorField1;
+    private javax.swing.JTextField ActorField2;
+    private javax.swing.JTextField ActorField3;
+    private javax.swing.JTextField ActorField4;
+    private javax.swing.JTextField ActorField5;
+    private javax.swing.JButton AddMovieButton;
+    private javax.swing.JComboBox CategoryBox1;
+    private javax.swing.JComboBox CategoryBox2;
+    private javax.swing.JComboBox CategoryBox3;
+    private javax.swing.JRadioButton GRadio;
+    private javax.swing.JRadioButton NC17Radio;
+    private javax.swing.JRadioButton PG13Radio;
+    private javax.swing.JRadioButton PGRadio;
+    private javax.swing.JTextField QuantityField;
+    private javax.swing.JRadioButton RRadio;
+    private javax.swing.JTextField ReleaseDay;
+    private javax.swing.JTextField ReleaseMonth;
+    private javax.swing.JTextField ReleaseYear;
+    private javax.swing.JTextField TitleField;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -316,19 +593,6 @@ public class AddMovie extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

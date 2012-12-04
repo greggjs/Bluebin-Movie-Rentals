@@ -492,13 +492,7 @@ public class Search extends javax.swing.JFrame {
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
-    
-    public void search() {
-        String bank = "";
-        StringBuilder bank_build = new StringBuilder();
-        bank_build.append("select ");
-    }
-    
+   
     /**
     * @param args the command line arguments
     */
