@@ -231,18 +231,33 @@ public class Rent extends javax.swing.JFrame {
         
         int row_selected = MovieTable.getSelectedRow();
         if (row_selected == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a movie to rent");
+            JOptionPane.showMessageDialog(this, 
+                    "Please select a movie to rent");
             return;
         }
-        String movie_title = MovieTable.getModel().getValueAt(row_selected, 0).toString();
-        String movie_q = "select movie_id from Movie where movie_name='"+movie_title+"'";
+        String movie_title = MovieTable.getModel()
+                .getValueAt(row_selected, 0).toString();
+        String movie_q = "select movie_id from Movie "
+                + "where movie_name='"+movie_title+"'";
         String movie_id = null;
         
         movie_id = selectStm(movie_q, "movie_id");
+        String bank = "select renter_phone from "
+                + "Has_Rented where movie_id = "
+                +movie_id+" and renter_phone = '"
+                +main.curr.getPhone()
+                +"';";
+        String test = selectStm(bank, "renter_phone");
+        if (main.curr.getPhone().equals(test)) {
+            JOptionPane.showMessageDialog(this, 
+                    "You have already rented"
+                    + " this movie");
+            return;
+        }
         
         int choice = JOptionPane.showConfirmDialog(this, 
-                "Charge this to your credit card $3.00 on file for this"
-                + " rental?",
+                "Charge $3.00 to your credit card"
+                + "\non file for this rental?",
                 "Rent Movie", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.NO_OPTION)
             return;
@@ -254,7 +269,7 @@ public class Rent extends javax.swing.JFrame {
         Date curr_date = new Date(curr_time);
         Date due_date = new Date(due_time);
         
-        String bank = "insert into Has_Rented values('"
+        bank = "insert into Has_Rented values('"
                 +main.curr.getPhone()+"', "+movie_id
                 +", '"+curr_date+"','"+due_date+"');";
         
@@ -265,7 +280,8 @@ public class Rent extends javax.swing.JFrame {
                 .getValueAt(row_selected, 3)));
         
         if (quantity == 0) {
-            JOptionPane.showMessageDialog(this, "Out of Stock");
+            JOptionPane.showMessageDialog(this,
+                    "Out of Stock");
             return;
         }
         

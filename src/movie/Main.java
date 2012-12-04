@@ -36,10 +36,12 @@ public class Main {
         // TODO code application logic here
         
         try { 
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
+            UIManager.setLookAndFeel(UIManager.
+                    getSystemLookAndFeelClassName()); 
             new Main().run();
         } catch (Exception ex) { 
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, "Error setting LaF", ex); 
+            Logger.getLogger(MainFrame.class.getName())
+                    .log(Level.SEVERE, "Error setting LaF", ex); 
         }
     }
     public Main() {

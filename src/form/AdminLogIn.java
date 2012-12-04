@@ -199,7 +199,8 @@ public class AdminLogIn extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         String input = MovieTitleField.getText();
-        String title_bank = "select movie_id from Movie where movie_name='"+input+"';";
+        String title_bank = "select movie_id from Movie "
+                + "where movie_name='"+input+"';";
         String movie_id = null;
         
         try {
@@ -220,7 +221,9 @@ public class AdminLogIn extends javax.swing.JFrame {
         }
         
         if (movie_id==null) {
-            JOptionPane.showMessageDialog(this, "No movie exists in database.\nError: NullId");
+            JOptionPane.showMessageDialog(this,
+                    "No movie exists in database."
+                    + "\nError: NullId");
             return;
         }
         
@@ -236,7 +239,8 @@ public class AdminLogIn extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         String phone = RenterPhoneField.getText();
-        String title_bank = "select renter_name from Renter where renter_phone='"+phone+"';";
+        String title_bank = "select renter_name from Renter "
+                + "where renter_phone='"+phone+"';";
         String name = null;
         
         try {
@@ -257,11 +261,14 @@ public class AdminLogIn extends javax.swing.JFrame {
         }
         
         if (name==null) {
-            JOptionPane.showMessageDialog(this, "No renter exists in database.\nError: NullId");
+            JOptionPane.showMessageDialog(this,
+                    "No renter exists in database."
+                    + "\nError: NullId");
             return;
         }
         
-        main.renterStatusFrame = new RenterStatus(main, phone, name);
+        main.renterStatusFrame = 
+                new RenterStatus(main, phone, name);
         this.setVisible(false);
         main.renterStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed

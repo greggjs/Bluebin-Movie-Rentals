@@ -353,8 +353,10 @@ public class AddMovie extends javax.swing.JFrame {
     private void AddMovieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMovieButtonActionPerformed
         // TODO add your handling code here:
         addMovie();
-        JOptionPane.showMessageDialog(this, "Successfully Added Movie",
-                "Movie Added", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Successfully Added Movie",
+                "Movie Added", 
+                JOptionPane.INFORMATION_MESSAGE);
         main.addMovieFrame.setVisible(false);
         main.addMovieFrame = null;
         main.loginAdminFrame.setVisible(true);
@@ -393,7 +395,8 @@ public class AddMovie extends javax.swing.JFrame {
         String title = TitleField.getText();
         
         if (title==null || title.length() > 80) {
-            JOptionPane.showMessageDialog(this, "Invalid Entry for Title");
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Entry for Title");
             return;
         }
                   
@@ -404,7 +407,8 @@ public class AddMovie extends javax.swing.JFrame {
             day = Integer.parseInt(ReleaseDay.getText());
             quantity = Integer.parseInt(QuantityField.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Input for Release Date"
+            JOptionPane.showMessageDialog(this, 
+                    "Invalid Input for Release Date"
                     + "\nor Quantity");
             return;
         }
@@ -423,7 +427,8 @@ public class AddMovie extends javax.swing.JFrame {
         
         String rating = getRating();
         if (rating==null) {
-            JOptionPane.showMessageDialog(this, "Invalid Input for Rating");
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Input for Rating");
             return;
         }
         
@@ -507,19 +512,23 @@ public class AddMovie extends javax.swing.JFrame {
                 String result = search(bank, "actor_name");
                 if (result==null) {
                     insert_index = maxIndex("actor_id", "Actor");
-                    bank = "insert into Actor values ("+insert_index
+                    bank = "insert into Actor values ("
+                            +insert_index
                             +", '"+actors[i]+"');";
                     insert(bank);
-                    bank = "insert into Starred_In values ("+insert_index
+                    bank = "insert into Starred_In values ("
+                            +insert_index
                             + ", "+index+");";
                     insert(bank);
                 }
                 else {
-                    bank = "select actor_id from Actor where actor_name"
+                    bank = "select actor_id from Actor "
+                            + "where actor_name"
                             + " = '"+actors[i]+"';";
-                    int id = Integer.parseInt(search(bank, "actor_id"));
-                    bank = "insert into Starred_In values ("+id+", "+
-                            index+");";
+                    int id = Integer.parseInt(search(bank,
+                            "actor_id"));
+                    bank = "insert into Starred_In values ("
+                            +id+", "+index+");";
                     insert(bank);
                 }
             }
@@ -529,9 +538,11 @@ public class AddMovie extends javax.swing.JFrame {
     public void insertCategories(String[] categories) {
         for (int i = 0; i < categories.length; i++) {
             if (!(categories[i]==null)) {
-                String bank = "select category_id from Category where"
-                        + " category_name = '"+categories[i]+"';";
-                int cat_id = Integer.parseInt(search(bank, "category_id"));
+                String bank = "select category_id "
+                        + "from Category where category_name = '"
+                        +categories[i]+"';";
+                int cat_id = Integer.parseInt(search(bank,
+                        "category_id"));
                 bank = "insert into Has_Category values ("+cat_id
                             +", "+index+");";
                 insert(bank);

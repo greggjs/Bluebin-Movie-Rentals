@@ -340,7 +340,8 @@ public class UpdateUser extends javax.swing.JFrame {
     
     public void updatePW() {
         char[] old_pw_arr, new_pw_arr, confirm_pw_arr;
-        String check = null, test = null, bank, old_pw, new_pw, confirm_pw;
+        String check = null, test = null, bank, old_pw,
+                new_pw, confirm_pw;
         old_pw_arr = OldPWField.getPassword();
         old_pw = new String(old_pw_arr);
         new_pw_arr = NewPWField.getPassword();

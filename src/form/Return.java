@@ -242,20 +242,25 @@ public class Return extends javax.swing.JFrame {
     public void returnMovie() {
         int row_selected = jTable1.getSelectedRow();
         if (row_selected == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a movie to return");
+            JOptionPane.showMessageDialog(this,
+                    "Please select a movie to return");
             return;
         }  
-        String movie_title = jTable1.getModel().getValueAt(row_selected, 0).toString();
+        String movie_title = jTable1.getModel().
+                getValueAt(row_selected, 0).toString();
         String bank = new String("delete from Has_Rented "
                 + "where renter_phone='"+main.curr.getPhone())
                 +"' and movie_id=(select movie_id from Movie"
                 + " where movie_name='"+movie_title+"');";
         
-        int late_days = Integer.parseInt(jTable1.getModel().getValueAt(row_selected, 3).toString());
+        int late_days = Integer.parseInt(jTable1.
+                getModel().getValueAt(row_selected, 3)
+                .toString());
         if (late_days > 0) {
             double late_fee = 1.5+(late_days*.3);
             String disp = nf.format(late_fee);
-            int choice = JOptionPane.showConfirmDialog(this, "You have a late fee of "+disp+"\n"
+            int choice = JOptionPane.showConfirmDialog(this,
+                    "You have a late fee of "+disp+"\n"
                     + "Charge this to your credit card on file?",
                     "Late Fee Detected", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.NO_OPTION)

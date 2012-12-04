@@ -211,7 +211,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         String[] ret = multiSelect(bank);
         
-        if (!checkUserQuery(ret[0], ret[1], ret[2]))
+        if (!checkUserQuery(ret[0], ret[1], pwd))
             return;
         else {
             this.setVisible(false);
@@ -228,18 +228,21 @@ public class MainFrame extends javax.swing.JFrame {
         String test = UserInput.getText();
         char[] pwd_arr = PasswordField.getPassword();
         String pwd = new String(pwd_arr);
-        String bank = "SELECT admin_id FROM Movie_Admin where admin_id = '" + test + "'";
-        String pwd_bank = "SELECT password FROM Movie_Admin where password = '" + pwd + "'";
-        String admin = null;
+        String bank = "SELECT admin_id, password "
+                + "FROM Movie_Admin where admin_id = '"
+                + test + "'";
+        String pwd_bank = "SELECT password "
+                + "FROM Movie_Admin where password = '"
+                + pwd + "'";
+        String[] admin = null;
         String pwd_check = null;
 
         if (!checkAdmin(test, pwd))
             return;
 
-        admin = singleSelect(bank, "admin_id");
-        pwd_check = singleSelect(pwd_bank, "password");
-      
-        if (!checkAdminQuery(admin, pwd_check))
+        admin = doubleSelect(bank);
+        
+        if (!checkAdminQuery(admin))
             return;
         else {  
             this.setVisible(false);
@@ -250,8 +253,8 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    public String singleSelect(String bank, String type) {
-        String check = null;
+    public String[] doubleSelect(String bank) {
+        String[] check = new String[2];
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -260,7 +263,8 @@ public class MainFrame extends javax.swing.JFrame {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while (rs.next()) {
-              check = rs.getString(type);
+              check[0] = rs.getString("admin_id");
+              check[1] = rs.getString("password");
             }
             
         } catch (SQLException e) {
@@ -304,30 +308,40 @@ public class MainFrame extends javax.swing.JFrame {
     public boolean checkAdmin(String test, String pwd) {
         
         if (test.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: NullUser");
+            JOptionPane.showMessageDialog(this,
+                    "Please enter your Admin "
+                    + "ID\nError: NullUser");
             return false;
         }
         else if (test.length()>20 || pwd.length()>20) {
-            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: InvalidLen");
+            JOptionPane.showMessageDialog(this,
+                    "Please enter your Admin "
+                    + "ID\nError: InvalidLen");
             this.UserInput.setText("");
             return false;
         }
         else if (pwd.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter your password\nError: NullPwd");
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter your password"
+                    + "\nError: NullPwd");
             return false;
         }
         return true;
     }
     
-    public boolean checkAdminQuery(String admin, String pwd_check) {
-        if (admin==null) {
-            JOptionPane.showMessageDialog(this, "Error, user not found\nError: InvalidAdmin");
+    public boolean checkAdminQuery(String[] admin) {
+        if (admin[0]==null) {
+            JOptionPane.showMessageDialog(this, 
+                    "Error, user not found\nError:"
+                    + " InvalidAdmin");
             this.UserInput.setText("");
             this.PasswordField.setText("");
             return false;
         }
-        if (pwd_check==null) {
-            JOptionPane.showMessageDialog(this, "Invalid Password\nError: AdminFoundPwdInvalid");
+        if (admin[1]==null) {
+            JOptionPane.showMessageDialog(this, 
+                    "Invalid Password\nError: "
+                    + "AdminFoundPwdInvalid");
             this.PasswordField.setText("");
             return false;
         }
@@ -371,14 +385,16 @@ public class MainFrame extends javax.swing.JFrame {
             String pwd_check, String pwd) {
         if (phone==null) {
             JOptionPane.showMessageDialog(this, 
-                    "Error, user not found\nError: InvalidUser");
+                    "Error, user not found"
+                    + "\nError: InvalidUser");
             this.UserInput.setText("");
             this.PasswordField.setText("");
             return false;
         }
         else if (!pwd_check.equals(pwd)) {
             JOptionPane.showMessageDialog(this,
-                    "Invalid Password\nError: UsrFoundPwdInvalid");
+                    "Invalid Password\nError:"
+                    + " UsrFoundPwdInvalid");
             this.PasswordField.setText("");
             return false;
         }

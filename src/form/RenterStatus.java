@@ -200,7 +200,8 @@ public class RenterStatus extends javax.swing.JFrame {
         int[] movie_arr = new int[rel_arr.length/4];
         String[] movie_title = new String[rel_arr.length/4];
         int row = 0;
-        bank = new String("select movie_name from Movie where movie_id=");
+        bank = new String("select movie_name from Movie "
+                + "where movie_id=");
         String movie = null;
         
         for (int i = 0; i < rel_arr.length-3; i+=4) {

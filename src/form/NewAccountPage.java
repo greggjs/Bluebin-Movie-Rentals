@@ -185,8 +185,10 @@ public class NewAccountPage extends javax.swing.JFrame {
         String pwd = new String (pwd_arr);
         char[] cpwd_arr = ConfirmPWField.getPassword();
         String cpwd = new String (cpwd_arr);
-        String select_bank = "SELECT renter_phone FROM Renter where renter_phone = '" + phone + "'";
-        String bank = "insert into Renter values ('"+phone +"', '"+name+"','"+credit_card+"','"+pwd+"')";
+        String select_bank = "SELECT renter_phone FROM Renter"
+                + " where renter_phone = '" + phone + "'";
+        String bank = "insert into Renter values ('"+phone +
+                "', '"+name+"','"+credit_card+"','"+pwd+"')";
         String phone_check = null;
         String test = null;
         

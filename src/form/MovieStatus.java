@@ -265,7 +265,8 @@ public class MovieStatus extends javax.swing.JFrame {
     */
     
     public void initialize() {
-        String bank = "select movie_name from Movie where movie_id="+id+";";
+        String bank = "select movie_name from Movie"
+                + " where movie_id="+id+";";
         title = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -284,10 +285,12 @@ public class MovieStatus extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-        bank = "select quantity from Movie where movie_id="+id+";";
+        bank = "select quantity from Movie where movie_id="
+                +id+";";
         stock = getQuantity(bank, "quantity");
         
-        bank = "select COUNT(movie_id) from Has_Rented where movie_id="+id+";";
+        bank = "select COUNT(movie_id) from Has_Rented "
+                + "where movie_id="+id+";";
         rented = getQuantity(bank, "count(movie_id)");
         
         total = stock+rented;
@@ -350,16 +353,20 @@ public class MovieStatus extends javax.swing.JFrame {
         String [] rel_arr = new_releases_s.split("~");
         int row = 0;
         for (int i = 0; i < rel_arr.length-2; i+=3) {
-            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2]});
+            model.insertRow(row, new Object[]{rel_arr[i],
+                rel_arr[i+1], rel_arr[i+2]});
             row++;
         }
     }
     
     private void removeAllCopies() {
-        String bank = "update Movie set quantity=0 where movie_id="+id+";";
+        String bank = "update Movie set quantity=0 where movie_id="
+                +id+";";
         
-        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove\n"
-                + "all copies of \""+title+"\"?", "Remove all Copies", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to remove\n"
+                + "all copies of \""+title+"\"?",
+                "Remove all Copies", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.NO_OPTION)
             return;
         
@@ -371,7 +378,8 @@ public class MovieStatus extends javax.swing.JFrame {
             PreparedStatement stm = conn.prepareStatement(bank);
             stm.execute();
         } catch (SQLException err) {
-            JOptionPane.showMessageDialog(this, "You already rented this movie...");
+            JOptionPane.showMessageDialog(this,
+                    "You already rented this movie...");
             return;
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");

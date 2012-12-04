@@ -149,8 +149,7 @@ public class SearchResults extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         rentMovie();
-        main.searchResultsFrame = null;
-        main.searchFrame.setVisible(true);
+        
         data = null;
         model = new DefaultTableModel(data, col);
         jTable1.setModel(model);
@@ -184,7 +183,8 @@ public class SearchResults extends javax.swing.JFrame {
         String [] rel_arr = res_s.split("~");
         int row = 0;
         for (int i = 0; i < rel_arr.length-3; i+=4) {
-            model.insertRow(row, new Object[]{rel_arr[i], rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
+            model.insertRow(row, new Object[]{rel_arr[i],
+                rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
             row++;
         }
     }
@@ -193,17 +193,30 @@ public class SearchResults extends javax.swing.JFrame {
         
         int row_selected = jTable1.getSelectedRow();
         if (row_selected == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a movie to rent");
+            JOptionPane.showMessageDialog(this,
+                    "Please select a movie to rent");
             return;
         }
-        String movie_title = jTable1.getModel().getValueAt(row_selected, 0).toString();
-        String movie_q = "select movie_id from Movie where movie_name='"+movie_title+"'";
+        String movie_title = jTable1.getModel()
+                .getValueAt(row_selected, 0).toString();
+        String movie_q = "select movie_id from"
+                + " Movie where movie_name='"+movie_title+"'";
         String movie_id = null;
         
         movie_id = selectStm(movie_q, "movie_id");
-        
+        String bank = "select renter_phone from "
+                + "Has_Rented where movie_id = "
+                +movie_id+" and renter_phone = '"
+                +main.curr.getPhone()
+                +"';";
+        String test = selectStm(bank, "renter_phone");
+        if (main.curr.getPhone().equals(test)) {
+            JOptionPane.showMessageDialog(this, "You already"
+                    + " have this movie rented out...");
+            return;
+        }
         int choice = JOptionPane.showConfirmDialog(this, 
-                "Charge this to your credit card on file for this"
+                "Charge $3.00 to your credit card on file for this"
                 + " rental?",
                 "Rent New Release", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.NO_OPTION)
@@ -216,7 +229,7 @@ public class SearchResults extends javax.swing.JFrame {
         Date curr_date = new Date(curr_time);
         Date due_date = new Date(due_time);
         
-        String bank = "insert into Has_Rented values('"
+        bank = "insert into Has_Rented values('"
                 +main.curr.getPhone()+"', "+movie_id
                 +", '"+curr_date+"','"+due_date+"');";
         
@@ -235,6 +248,9 @@ public class SearchResults extends javax.swing.JFrame {
                 + "= quantity-1 where movie_id="+movie_id+";";
         prepStm(bank);
         
+        this.setVisible(false);
+        main.searchResultsFrame = null;
+        main.searchFrame.setVisible(true);
     }
     
     public void prepStm(String bank) {
