@@ -185,31 +185,10 @@ public class NewAccountPage extends javax.swing.JFrame {
         String pwd = new String (pwd_arr);
         char[] cpwd_arr = ConfirmPWField.getPassword();
         String cpwd = new String (cpwd_arr);
-        String phone_check = null;
         String select_bank = "SELECT renter_phone FROM Renter where renter_phone = '" + phone + "'";
         String bank = "insert into Renter values ('"+phone +"', '"+name+"','"+credit_card+"','"+pwd+"')";
-        String test = /*"test"*/ null;
-        
-        try {
-            Long.parseLong(phone);
-        } catch (NumberFormatException err) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter a valid phone #\n"
-                    + "Example:5554443333"
-                    + "\nError: NumFormat");
-            PhoneField.setText("");
-            return;
-        }
-        try {
-            Long.parseLong(credit_card);
-        } catch (NumberFormatException err) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter a credit card #\n"
-                    + "Example:5555111188889999"
-                    + "\nError: NumFormat");
-            CreditCardField.setText("");
-            return;
-        }
+        String phone_check = null;
+        String test = null;
         
         if (name.equals("")) {
             JOptionPane.showMessageDialog(this, 
@@ -217,82 +196,19 @@ public class NewAccountPage extends javax.swing.JFrame {
                     + "\nError: NullName");
             return;
         }
-        else if (phone.equals("")) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter your phone #"
-                    + "\nError: NullPhone");
-            return;
-        }
-        else if (credit_card.equals("")) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter your credit card"
-                    + "\nError: NullCrCd");
-            return;
-        }
-        else if (pwd.equals("")) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter your password"
-                    + "\nError: NullPwd");
-            return;
-        }
-        else if (cpwd.equals("")) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please confirm your password"
-                    + "\nError: NullPwdCon");
-            return;
-        } 
-        else if (phone.length()!=10) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter a valid phone number"
-                    + "\nExample: 5557776546"
-                    + "\nError: IncrtPhone");
-            return;
-        }
-        else if (credit_card.length()!=16) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter a vlid credit card"
-                    + "\nExample: 4444777788885555"
-                    + "\nError: IncrtCrCd");
-            return;
-        }
-        else if (!pwd.equals(cpwd)) {
-            JOptionPane.showMessageDialog(this, 
-                    "Please enter your password "
-                    + "correctly both times\nError: PwdMismatch");
-            return;
-        } 
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012?"
-                    + "user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(select_bank);
-            while (rs.next()) {
-                test = rs.getString("renter_phone");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error 1");
-        } catch (ClassNotFoundException err) {
-            System.out.println ("Problem!");
-        }
+        if (!checkPhone(phone))
+            return;
+        else if (!checkCC(credit_card))
+            return;
+        else if (!checkPwd(pwd, cpwd))
+            return;
+        
+        test = selectStm(select_bank, "renter_phone");
         
         if (test==null) {
             
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3307/fall2012"
-                        + "?user=greggjs&password=greggjs");
-                PreparedStatement stm = conn.prepareStatement(bank);
-                stm.execute();
-            } catch (SQLException e) {
-                System.out.println("SQL Error 2");
-                return;
-            } catch (ClassNotFoundException err) {
-                System.out.println ("Problem!");
-            }
+            prepStm(bank);
               
             main.curr = new Renter(name, phone);
             this.setVisible(false);
@@ -331,6 +247,125 @@ public class NewAccountPage extends javax.swing.JFrame {
         main.frame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public void prepStm(String bank) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            PreparedStatement stm = conn.prepareStatement(bank);
+            stm.execute();
+        } catch (SQLException e) {
+            System.out.println("SQL Error 2");
+            return;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+    }
+    
+    public String selectStm(String bank, String type) {
+        String res = null;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012?"
+                    + "user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while (rs.next()) {
+                res = rs.getString(type);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error 1");
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+        
+        return res;
+    }
+    
+    public boolean checkPhone(String phone) {
+        
+        try {
+            Long.parseLong(phone);
+            if (phone.equals("")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter your phone #"
+                    + "\nError: NullPhone");
+                return false;
+            }
+            else if (phone.length()!=10) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter a valid phone number"
+                    + "\nExample: 5557776546"
+                    + "\nError: IncrtPhone");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException err) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter a valid phone #\n"
+                    + "Example:5554443333"
+                    + "\nError: NumFormat");
+            PhoneField.setText("");
+            return false;
+        }
+        
+    }
+    
+    public boolean checkCC(String credit_card) {
+        
+        try {
+            Long.parseLong(credit_card);
+            if (credit_card.equals("")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter your credit card"
+                    + "\nError: NullCrCd");
+                return false;
+            }
+            else if (credit_card.length()!=16) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter a vlid credit card"
+                    + "\nExample: 4444777788885555"
+                    + "\nError: IncrtCrCd");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException err) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter a credit card #\n"
+                    + "Example:5555111188889999"
+                    + "\nError: NumFormat");
+            CreditCardField.setText("");
+            return false;
+        }    
+    }
+    
+    public boolean checkPwd(String pwd, String cpwd) {
+        
+        if (pwd.equals("")) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter your password"
+                    + "\nError: NullPwd");
+            return false;
+        }
+        else if (cpwd.equals("")) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please confirm your password"
+                    + "\nError: NullPwdCon");
+            return false;
+        } 
+        
+        else if (!pwd.equals(cpwd)) {
+            JOptionPane.showMessageDialog(this, 
+                    "Please enter your password "
+                    + "correctly both times\nError: PwdMismatch");
+            return false;
+        } 
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */

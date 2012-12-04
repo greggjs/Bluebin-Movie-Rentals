@@ -170,14 +170,13 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void UserInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserInputActionPerformed
-        // TODO add your handling code here:
+        
         
     }//GEN-LAST:event_UserInputActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-      //Connection conn = null;
-     loginUser();
+        loginUser();
     
     }//GEN-LAST:event_jButton2ActionPerformed
     
@@ -187,8 +186,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      // TODO add your handling code here:
-      loginAdmin();
+        // TODO add your handling code here:
+        loginAdmin();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -201,71 +200,24 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void loginUser() {
         String test = UserInput.getText();
-        try {
-            Long.parseLong(test);
-        } catch(NumberFormatException err) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid phone number\nExample: 5555555555\nError: NumFormat");
-            return;
-        }
         char[] pwd_arr = PasswordField.getPassword();
         String pwd = new String(pwd_arr);
-        String bank = "SELECT renter_phone, password, renter_name FROM Renter where renter_phone = '" + test + "';";
-        String pwd_bank = "SELECT password FROM Renter where password = '" + pwd + "';";
-        String phone = null;
-        String pwd_check = null;
-        String name = null;
-
-        if (test.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter a phone number\nExample: 5555555555\nError: NullUser");
+        String bank = "SELECT renter_phone, password, "
+                + "renter_name FROM Renter where "
+                + "renter_phone = '" + test + "';";
+        
+        if (!checkUser(test, pwd))
             return;
-        }
-        else if (test.length()!=10) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid phone number\nExample: 5555555555\nError: InvalidPhone");
-            this.UserInput.setText("");
+        
+        String[] ret = multiSelect(bank);
+        
+        if (!checkUserQuery(ret[0], ret[1], ret[2]))
             return;
-        }
-        else if (pwd.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter a password\nError: NullPwd");
-            return;
-        }
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            while (rs.next()) {
-              phone = rs.getString("renter_phone");
-              pwd_check = rs.getString("password");
-              name = rs.getString("renter_name");
-            }
-
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-            err.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
-
-        if (phone==null) {
-            JOptionPane.showMessageDialog(this, "Error, user not found\nError: InvalidUser");
-            this.UserInput.setText("");
-            this.PasswordField.setText("");
-            return;
-        }
-        if (!pwd_check.equals(pwd)) {
-            JOptionPane.showMessageDialog(this, "Invalid Password\nError: UsrFoundPwdInvalid");
-            this.PasswordField.setText("");
-        }
-        else {  
-
-
+        else {
             this.setVisible(false);
             this.UserInput.setText("");
             this.PasswordField.setText("");
-            main.curr = new Renter(name, phone);
+            main.curr = new Renter(ret[2], ret[0]);
             main.loginUserFrame = new UserLogIn(main);
             main.loginUserFrame.setVisible(true);
 
@@ -274,7 +226,6 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void loginAdmin() {
         String test = UserInput.getText();
-
         char[] pwd_arr = PasswordField.getPassword();
         String pwd = new String(pwd_arr);
         String bank = "SELECT admin_id FROM Movie_Admin where admin_id = '" + test + "'";
@@ -282,49 +233,14 @@ public class MainFrame extends javax.swing.JFrame {
         String admin = null;
         String pwd_check = null;
 
-        if (test.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: NullUser");
+        if (!checkAdmin(test, pwd))
             return;
-        }
-        else if (test.length()>20 || pwd.length()>20) {
-            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: InvalidLen");
-            this.UserInput.setText("");
-            return;
-        }
-        else if (pwd.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter your password\nError: NullPwd");
-            return;
-        }
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            while (rs.next()) {
-              admin = rs.getString("admin_id");
-            }
-            rs = stm.executeQuery(pwd_bank);
-            while (rs.next()) {
-              pwd_check = rs.getString("password");
-            }
-        } catch (SQLException e) {
-            System.out.println("cannot find driver");
-            return;
-        } catch (ClassNotFoundException err) {
-            System.out.println ("Problem!");
-        }
+        admin = singleSelect(bank, "admin_id");
+        pwd_check = singleSelect(pwd_bank, "password");
       
-        if (admin==null) {
-            JOptionPane.showMessageDialog(this, "Error, user not found\nError: InvalidAdmin");
-            this.UserInput.setText("");
-            this.PasswordField.setText("");
+        if (!checkAdminQuery(admin, pwd_check))
             return;
-        }
-        if (pwd_check==null) {
-            JOptionPane.showMessageDialog(this, "Invalid Password\nError: AdminFoundPwdInvalid");
-            this.PasswordField.setText("");
-        }
         else {  
             this.setVisible(false);
             this.UserInput.setText("");
@@ -334,9 +250,140 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    public String singleSelect(String bank, String type) {
+        String check = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while (rs.next()) {
+              check = rs.getString(type);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("cannot find driver");
+            return null;
+        } catch (ClassNotFoundException err) {
+            System.out.println ("Problem!");
+        }
+        return check;
+    }
+    
     /**
      * @param args the command line arguments
      */
+    
+    public String[] multiSelect(String bank) {
+        String[] ret = new String[3];
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            while (rs.next()) {
+              ret[0] = rs.getString("renter_phone");
+              ret[1] = rs.getString("password");
+              ret[2] = rs.getString("renter_name");
+            }
+
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+            err.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        return ret;
+    }
+    
+    public boolean checkAdmin(String test, String pwd) {
+        
+        if (test.equals("")) {
+            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: NullUser");
+            return false;
+        }
+        else if (test.length()>20 || pwd.length()>20) {
+            JOptionPane.showMessageDialog(this, "Please enter your Admin ID\nError: InvalidLen");
+            this.UserInput.setText("");
+            return false;
+        }
+        else if (pwd.equals("")) {
+            JOptionPane.showMessageDialog(this, "Please enter your password\nError: NullPwd");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkAdminQuery(String admin, String pwd_check) {
+        if (admin==null) {
+            JOptionPane.showMessageDialog(this, "Error, user not found\nError: InvalidAdmin");
+            this.UserInput.setText("");
+            this.PasswordField.setText("");
+            return false;
+        }
+        if (pwd_check==null) {
+            JOptionPane.showMessageDialog(this, "Invalid Password\nError: AdminFoundPwdInvalid");
+            this.PasswordField.setText("");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkUser(String test, String pwd) {
+        try {
+            Long.parseLong(test);
+            if (test.equals("")) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a phone number\nExample: "
+                        + "5555555555\nError: NullUser");
+                return false;
+            }
+            else if (test.length()!=10) {
+               JOptionPane.showMessageDialog(this, 
+                       "Please enter a valid phone "
+                       + "number\nExample: 5555555555"
+                       + "\nError: InvalidPhone");
+               this.UserInput.setText("");
+               return false;
+            }
+            else if (pwd.equals("")) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a password"
+                        + "\nError: NullPwd");
+                return false;
+            }
+        } catch(NumberFormatException err) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid phone "
+                    + "number\nExample: 5555555555"
+                    + "\nError: NumFormat");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkUserQuery(String phone,
+            String pwd_check, String pwd) {
+        if (phone==null) {
+            JOptionPane.showMessageDialog(this, 
+                    "Error, user not found\nError: InvalidUser");
+            this.UserInput.setText("");
+            this.PasswordField.setText("");
+            return false;
+        }
+        else if (!pwd_check.equals(pwd)) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Password\nError: UsrFoundPwdInvalid");
+            this.PasswordField.setText("");
+            return false;
+        }
+        return true;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField PasswordField;

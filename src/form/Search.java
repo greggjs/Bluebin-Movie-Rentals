@@ -26,7 +26,7 @@ import movie.*;
  */
 public class Search extends javax.swing.JFrame {
     Main main;
-    DefaultComboBoxModel model;
+    DefaultComboBoxModel model1;
     DefaultComboBoxModel model2;
     DefaultComboBoxModel model3;
     /** Creates new  */
@@ -127,7 +127,7 @@ public class Search extends javax.swing.JFrame {
         KeywordRadio.setText("Keyword");
 
         GenreBox.setBackground(new java.awt.Color(0, 100, 123));
-        GenreBox.setModel(model);
+        GenreBox.setModel(model1);
 
         jLabel2.setBackground(new java.awt.Color(0, 100, 123));
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -244,9 +244,7 @@ public class Search extends javax.swing.JFrame {
                                                         .addComponent(KeywordRadio)))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jButton3))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(97, 97, 97)))
+                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(10, 10, 10)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel2)
@@ -399,46 +397,12 @@ public class Search extends javax.swing.JFrame {
     public void initialize() {
         String bank = "select category_name from Category;";
         String[] cat_arr = new String[30];
-        model = new DefaultComboBoxModel();
-        model.addElement("");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                model.addElement(rs.getString("category_name"));
-                //cat_arr[i] = rs.getString("category_name");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        model1 = new DefaultComboBoxModel();
+        comboStm(bank, "category_name", model1);
         
         bank = "select actor_name from Actor";
         model2 = new DefaultComboBoxModel();
-        model2.addElement("");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                model2.addElement(rs.getString("actor_name"));
-                //cat_arr[i] = rs.getString("category_name");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        comboStm(bank, "actor_name", model2);
         
         model3 = new DefaultComboBoxModel();
         model3.addElement("");
@@ -446,47 +410,31 @@ public class Search extends javax.swing.JFrame {
             model3.addElement(i);
         }
         
-        
-        
     }
     
     public void searchTitleOrKeyword() {
         String search = SearchField.getText();
         String bank=null;
         
+        if (search.length() > 80 || search==null) {
+            JOptionPane.showMessageDialog(
+                    this, "Incorrect Search Value");
+            return;
+        }
+        
         if (TitleRadio.isSelected()) {
-            bank = "select * from Movie where movie_name='"+search+"';";
+            
+            bank = "select * from Movie "
+                    + "where movie_name='"+search+"';";
         }
         
         else if (KeywordRadio.isSelected()) {
-            bank = "select * from Movie where movie_name like '%"+search+"%';";
+            
+            bank = "select * from Movie where "
+                    + "movie_name like '%"+search+"%';";
         }
         
-        StringBuilder res = new StringBuilder();
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                res.append(rs.getString("movie_name"));
-                res.append("~");
-                res.append(rs.getString("release_date"));
-                res.append("~");
-                res.append(rs.getString("rating"));
-                res.append("~");
-                res.append(rs.getString("quantity"));
-                res.append("~");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        StringBuilder res = getMovies(bank);
         
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
@@ -536,32 +484,7 @@ public class Search extends javax.swing.JFrame {
                 + "join Category where category_name='"
                 +genre+"';";
         
-        StringBuilder res = new StringBuilder();
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                res.append(rs.getString("movie_name"));
-                res.append("~");
-                res.append(rs.getString("release_date"));
-                res.append("~");
-                res.append(rs.getString("rating"));
-                res.append("~");
-                res.append(rs.getString("quantity"));
-                res.append("~");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-            
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        StringBuilder res = getMovies(bank);
         
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
@@ -587,32 +510,7 @@ public class Search extends javax.swing.JFrame {
             bank = "select * from Movie where rating ='NC17';";
         }
         
-        System.out.println(bank);
-        StringBuilder res = new StringBuilder();
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                res.append(rs.getString("movie_name"));
-                res.append("~");
-                res.append(rs.getString("release_date"));
-                res.append("~");
-                res.append(rs.getString("rating"));
-                res.append("~");
-                res.append(rs.getString("quantity"));
-                res.append("~");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        StringBuilder res = getMovies(bank);
         
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
@@ -629,34 +527,8 @@ public class Search extends javax.swing.JFrame {
         String bank = "select * from Movie "
                 + "where release_date > '"
                 +year+"-01-01' and release_date < '"+year+"-12-31';";
-        System.out.println(bank);
         
-        StringBuilder res = new StringBuilder();
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            for (int i =0; rs.next(); i++) {
-                res.append(rs.getString("movie_name"));
-                res.append("~");
-                res.append(rs.getString("release_date"));
-                res.append("~");
-                res.append(rs.getString("rating"));
-                res.append("~");
-                res.append(rs.getString("quantity"));
-                res.append("~");
-            }
-          
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-            
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        StringBuilder res = getMovies(bank);
         
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
@@ -674,8 +546,15 @@ public class Search extends javax.swing.JFrame {
                 + "join Actor where actor_name='"
                 +actor+"';";
         
-        StringBuilder res = new StringBuilder();
+        StringBuilder res = getMovies(bank);
         
+        main.searchFrame.setVisible(false);
+        main.searchResultsFrame = new SearchResults(main, res);
+        main.searchResultsFrame.setVisible(true);
+    }
+
+    public StringBuilder getMovies(String bank) {
+        StringBuilder res = new StringBuilder();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -700,10 +579,29 @@ public class Search extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
-        
-        main.searchFrame.setVisible(false);
-        main.searchResultsFrame = new SearchResults(main, res);
-        main.searchResultsFrame.setVisible(true);
+        return res;
     }
-
+    
+    public void comboStm(String bank, String type,
+            DefaultComboBoxModel model) {
+        model.addElement("");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                model.addElement(rs.getString(type));
+                //cat_arr[i] = rs.getString("category_name");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("problem has occurred");
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+    }
+    
 }
