@@ -58,13 +58,11 @@ public class AddMovie extends javax.swing.JFrame {
         ActorField1 = new javax.swing.JTextField();
         ActorField2 = new javax.swing.JTextField();
         ActorField3 = new javax.swing.JTextField();
-        ActorField4 = new javax.swing.JTextField();
         GRadio = new javax.swing.JRadioButton();
         PGRadio = new javax.swing.JRadioButton();
         PG13Radio = new javax.swing.JRadioButton();
         RRadio = new javax.swing.JRadioButton();
         NC17Radio = new javax.swing.JRadioButton();
-        ActorField5 = new javax.swing.JTextField();
         AddMovieButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         CategoryBox2 = new javax.swing.JComboBox();
@@ -120,6 +118,18 @@ public class AddMovie extends javax.swing.JFrame {
 
         CategoryBox1.setModel(model1);
 
+        QuantityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        ReleaseYear.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        TitleField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        ActorField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        ActorField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        ActorField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         GRadio.setForeground(new java.awt.Color(255, 255, 255));
         GRadio.setText("G");
         GRadio.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +178,10 @@ public class AddMovie extends javax.swing.JFrame {
 
         CategoryBox3.setModel(model3);
 
+        ReleaseMonth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        ReleaseDay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,15 +205,10 @@ public class AddMovie extends javax.swing.JFrame {
                                             .add(jLabel9)
                                             .add(jPanel1Layout.createSequentialGroup()
                                                 .add(3, 3, 3)
-                                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                                    .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(AddMovieButton)
-                                                        .add(31, 31, 31)
-                                                        .add(jButton2))
-                                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox1, 0, 165, Short.MAX_VALUE))))))
+                                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox1, 0, 165, Short.MAX_VALUE)))))
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                             .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -212,35 +221,33 @@ public class AddMovie extends javax.swing.JFrame {
                                         .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jPanel1Layout.createSequentialGroup()
-                                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jPanel1Layout.createSequentialGroup()
-                                                .add(27, 27, 27)
-                                                .add(jLabel12))
-                                            .add(jPanel1Layout.createSequentialGroup()
-                                                .add(21, 21, 21)
-                                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                                    .add(jLabel10)
-                                                    .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(PGRadio)
-                                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                                        .add(NC17Radio))
-                                                    .add(PG13Radio)
-                                                    .add(jPanel1Layout.createSequentialGroup()
-                                                        .add(GRadio)
-                                                        .add(18, 18, 18)
-                                                        .add(RRadio)))))
-                                        .add(0, 0, Short.MAX_VALUE))
-                                    .add(jPanel1Layout.createSequentialGroup()
                                         .add(27, 27, 27)
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                             .add(org.jdesktop.layout.GroupLayout.TRAILING, ActorField3)
                                             .add(ActorField2)
-                                            .add(ActorField4)
-                                            .add(ActorField5)))))
+                                            .add(jPanel1Layout.createSequentialGroup()
+                                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                                    .add(jLabel12)
+                                                    .add(jLabel10)
+                                                    .add(PG13Radio)
+                                                    .add(jPanel1Layout.createSequentialGroup()
+                                                        .add(GRadio)
+                                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                                        .add(RRadio))
+                                                    .add(jPanel1Layout.createSequentialGroup()
+                                                        .add(PGRadio)
+                                                        .add(5, 5, 5)
+                                                        .add(NC17Radio)))
+                                                .add(0, 0, Short.MAX_VALUE))))
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(AddMovieButton)
+                                        .add(31, 31, 31)
+                                        .add(jButton2))))
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
                                 .add(16, 16, 16)
                                 .add(TitleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 217, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 51, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(ActorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 205, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(47, 47, 47)))
                 .addContainerGap())
@@ -269,31 +276,17 @@ public class AddMovie extends javax.swing.JFrame {
                     .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(ActorField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel11))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ActorField5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel8)
-                    .add(jLabel10))
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(6, 6, 6)
-                        .add(CategoryBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(CategoryBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(6, 6, 6)
-                        .add(CategoryBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jLabel11)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(AddMovieButton)
-                            .add(jButton2))
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(jLabel8)
+                        .add(6, 6, 6)
+                        .add(CategoryBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel1Layout.createSequentialGroup()
+                        .add(jLabel10)
                         .add(18, 18, 18)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(GRadio)
@@ -303,7 +296,19 @@ public class AddMovie extends javax.swing.JFrame {
                             .add(PGRadio)
                             .add(NC17Radio))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(PG13Radio)
+                        .add(PG13Radio)))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(CategoryBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(CategoryBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(14, 14, 14)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(AddMovieButton)
+                            .add(jButton2))
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -411,12 +416,10 @@ public class AddMovie extends javax.swing.JFrame {
         categories[1]= (String)CategoryBox2.getSelectedItem();
         categories[2]= (String)CategoryBox3.getSelectedItem();
         
-        String[] actors = new String[5];
+        String[] actors = new String[3];
         actors[0] = ActorField1.getText();
         actors[1] = ActorField2.getText();
         actors[2] = ActorField3.getText();
-        actors[3] = ActorField4.getText();
-        actors[4] = ActorField5.getText();
         
         String rating = getRating();
         if (rating==null) {
@@ -568,8 +571,6 @@ public class AddMovie extends javax.swing.JFrame {
     private javax.swing.JTextField ActorField1;
     private javax.swing.JTextField ActorField2;
     private javax.swing.JTextField ActorField3;
-    private javax.swing.JTextField ActorField4;
-    private javax.swing.JTextField ActorField5;
     private javax.swing.JButton AddMovieButton;
     private javax.swing.JComboBox CategoryBox1;
     private javax.swing.JComboBox CategoryBox2;
