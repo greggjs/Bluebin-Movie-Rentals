@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>movie.Main</string>
 	<key>CFBundleVersion</key>
-	<string>3.0</string>
+	<string>4.0</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<string>true</string>
 	<key>CFBundleExecutable</key>
