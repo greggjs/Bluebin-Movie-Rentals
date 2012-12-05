@@ -23,11 +23,17 @@ import javax.swing.table.DefaultTableModel;
  */
 
 /**
- *
- * @author cutnop
+ * The main Rent screen, which allows users to rent
+ * some of the newer releases or search for a specific
+ * movie in the database.
+ * 
+ * Form by Patrick Cutno, Code by Jake Gregg
+ * @author cutnop, greggjs
  */
 public class Rent extends javax.swing.JFrame {
     Main main;
+    
+    // Variables for the table of movies
     Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Release Date", "Rating", "Quantity"
@@ -153,12 +159,23 @@ public class Rent extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Takes the user back to the User home page.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         main.loginUserFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Takes the user to the Advanced Search screen, where they
+     * can search by many different options.
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -166,18 +183,35 @@ public class Rent extends javax.swing.JFrame {
         main.searchFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Takes the user back to the User home page upon window
+     * close.
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.loginUserFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Fills the table with the most recent movies in our database
+     * upon window opening.
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         fillTable();
-        
-        
     }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Rents a selected movie from the table, given that the user
+     * has not already rented the movie and the user has
+     * selected a movie to rent.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         rentMovie();
@@ -188,11 +222,23 @@ public class Rent extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Fills the table with the most recent movies in the 
+     * database from the year 2000 and up.
+     */
     public void fillTable() {
+        
+        // select query we send to the database.
         String bank = "select * from Movie where "
                 + "release_date > '2000-01-01' "
                 + "order by release_date desc;";
+        
+        // store all the movies in this object
         StringBuilder new_releases = new StringBuilder("");
+        
+        // make a connection and store all values in the 
+        // StringBuilder. The "~" is used as a delimeter
+        // for later steps.
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -217,8 +263,12 @@ public class Rent extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
+        // the results are then converted to a String[]
+        // through splitting on the "~".
         String new_releases_s = new_releases.toString();
         String [] rel_arr = new_releases_s.split("~");
+        
+        // For each movie, generate a row in the table.
         int row = 0;
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             model.insertRow(row, new Object[]{rel_arr[i],
@@ -227,27 +277,45 @@ public class Rent extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Rents a movie from the database, and stores a record 
+     * of it in the database. It does not allow a user to rent
+     * something they are currently renting, if there are 
+     * no copies of the movie, or if they did not select a movie
+     * to rent.
+     */
     public void rentMovie() {
         
+        // Gets the index the user has selected in the table.
+        // if none, it returns.
         int row_selected = MovieTable.getSelectedRow();
         if (row_selected == -1) {
             JOptionPane.showMessageDialog(this, 
                     "Please select a movie to rent");
             return;
         }
+        
+        // Information retreived for query from table
+        // and a select query is formed/
         String movie_title = MovieTable.getModel()
                 .getValueAt(row_selected, 0).toString();
         String movie_q = "select movie_id from Movie "
                 + "where movie_name='"+movie_title+"'";
         String movie_id = null;
         
+        // Movie ID is found from the database and is stored
+        // appropriately
         movie_id = selectStm(movie_q, "movie_id");
+        
+        // Statement created to see if the user has rented the
+        // movie already
         String bank = "select renter_phone from "
                 + "Has_Rented where movie_id = "
                 +movie_id+" and renter_phone = '"
                 +main.curr.getPhone()
                 +"';";
         String test = selectStm(bank, "renter_phone");
+        // if they have, it will not let them rent it and returns.
         if (main.curr.getPhone().equals(test)) {
             JOptionPane.showMessageDialog(this, 
                     "You have already rented"
@@ -255,26 +323,7 @@ public class Rent extends javax.swing.JFrame {
             return;
         }
         
-        int choice = JOptionPane.showConfirmDialog(this, 
-                "Charge $3.00 to your credit card"
-                + "\non file for this rental?",
-                "Rent Movie", JOptionPane.YES_NO_OPTION);
-        if (choice == JOptionPane.NO_OPTION)
-            return;
-        
-        Long curr_time = System.currentTimeMillis();
-        Long seven_days = (long)604800000;
-        Long due_time = curr_time+seven_days;
-        
-        Date curr_date = new Date(curr_time);
-        Date due_date = new Date(due_time);
-        
-        bank = "insert into Has_Rented values('"
-                +main.curr.getPhone()+"', "+movie_id
-                +", '"+curr_date+"','"+due_date+"');";
-        
-        prepStm(bank);
-        
+        // if there are no copies to rent, return.
         int quantity = Integer.parseInt(
                 (String)(MovieTable.getModel()
                 .getValueAt(row_selected, 3)));
@@ -285,12 +334,44 @@ public class Rent extends javax.swing.JFrame {
             return;
         }
         
+        // It asks the User if they would like to rent this movie
+        // and charge them for it. If they decline, it returns with
+        // no rental executed.
+        int choice = JOptionPane.showConfirmDialog(this, 
+                "Charge $3.00 to your credit card"
+                + "\non file for this rental?",
+                "Rent Movie", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.NO_OPTION)
+            return;
+        // calculate the current date and the due date, which
+        // is 7 days after the current date.
+        Long curr_time = System.currentTimeMillis();
+        Long seven_days = (long)604800000;
+        Long due_time = curr_time+seven_days;
+        
+        // formate the dates for insertion
+        Date curr_date = new Date(curr_time);
+        Date due_date = new Date(due_time);
+        
+        // insert the record of the rental in the database.
+        bank = "insert into Has_Rented values('"
+                +main.curr.getPhone()+"', "+movie_id
+                +", '"+curr_date+"','"+due_date+"');";
+        prepStm(bank);
+        
+        // decrement the record
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
         prepStm(bank);
         
     }
     
+    /**
+     * This is the template for a PreparedStatement execution for
+     * the database, such as insertions and updates.
+     * 
+     * @param bank query to be executed
+     */
     public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -306,6 +387,14 @@ public class Rent extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * This is a template for a ResultSet execution for the
+     * database, for queries like selection.
+     * 
+     * @param bank query to be executed
+     * @param type variable to get from query
+     * @return String of the variable retrieved from the database
+     */
     public String selectStm(String bank, String type) {
         String res = null;
         try {

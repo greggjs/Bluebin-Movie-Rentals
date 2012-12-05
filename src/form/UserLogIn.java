@@ -12,8 +12,12 @@ import movie.*;
  */
 
 /**
- *
- * @author cutnop
+ * Forom done by Patrick Cutno, Code done by Jake Gregg. This
+ * is the main menu for Users. They can rent movies, return movies,
+ * or update their profile. They can logout which then takes them to
+ * the login screen.
+ * 
+ * @author cutnop, greggjs
  */
 public class UserLogIn extends javax.swing.JFrame {
     public Main main;
@@ -167,6 +171,12 @@ public class UserLogIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Logs out the user and opens the login screen upon 
+     * window close.
+     * 
+     * @param evt 
+     */
     private void WindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WindowClosing
         // TODO add your handling code here:
         main.curr = new Renter();
@@ -174,6 +184,11 @@ public class UserLogIn extends javax.swing.JFrame {
         main.loginUserFrame = null;
     }//GEN-LAST:event_WindowClosing
 
+    /**
+     * Takes the user to the Return screen to return movies.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -181,6 +196,11 @@ public class UserLogIn extends javax.swing.JFrame {
         main.returnFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Logs out the user and opens the login screen.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -188,6 +208,11 @@ public class UserLogIn extends javax.swing.JFrame {
         main.frame.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Takes user to the Rent screen to rent new movies.
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -195,17 +220,18 @@ public class UserLogIn extends javax.swing.JFrame {
         main.rentFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Takes user to the Update Profile screen, where they can
+     * update their phone, credit card, or password.
+     * 
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         main.updateUserFrame = new UpdateUser(main);
         main.updateUserFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    /**
-    * @param args the command line arguments
-    */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NameLabel;
