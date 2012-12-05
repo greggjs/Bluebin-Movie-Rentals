@@ -147,7 +147,7 @@ public class NewAccountPage extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CreditCardField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(9, 9, 9)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -178,6 +178,34 @@ public class NewAccountPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        addUser();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void WindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WindowClosing
+        // TODO add your handling code here:
+        this.NameField.setText("");
+        this.PhoneField.setText("");
+        this.CreditCardField.setText("");
+        this.PasswordField.setText("");
+        this.ConfirmPWField.setText("");
+        main.frame.setVisible(true);
+    }//GEN-LAST:event_WindowClosing
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.NameField.setText("");
+        this.PhoneField.setText("");
+        this.CreditCardField.setText("");
+        this.PasswordField.setText("");
+        this.ConfirmPWField.setText("");
+        this.setVisible(false);
+        main.frame.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public void addUser() {
+        
         String name = NameField.getText();
         String phone = PhoneField.getText();
         String credit_card = CreditCardField.getText();
@@ -214,6 +242,7 @@ public class NewAccountPage extends javax.swing.JFrame {
               
             main.curr = new Renter(name, phone);
             this.setVisible(false);
+            main.loginUserFrame = new UserLogIn(main);
             main.loginUserFrame.setVisible(true);
             
         } else {
@@ -226,29 +255,8 @@ public class NewAccountPage extends javax.swing.JFrame {
             this.ConfirmPWField.setText("");
             return;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void WindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WindowClosing
-        // TODO add your handling code here:
-        this.NameField.setText("");
-        this.PhoneField.setText("");
-        this.CreditCardField.setText("");
-        this.PasswordField.setText("");
-        this.ConfirmPWField.setText("");
-        main.frame.setVisible(true);
-    }//GEN-LAST:event_WindowClosing
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        this.NameField.setText("");
-        this.PhoneField.setText("");
-        this.CreditCardField.setText("");
-        this.PasswordField.setText("");
-        this.ConfirmPWField.setText("");
-        this.setVisible(false);
-        main.frame.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
+    
     public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");

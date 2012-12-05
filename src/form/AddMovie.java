@@ -5,11 +5,13 @@
 package form;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import movie.*;
@@ -24,6 +26,7 @@ public class AddMovie extends javax.swing.JFrame {
     DefaultComboBoxModel model1 = new DefaultComboBoxModel();
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
     DefaultComboBoxModel model3 = new DefaultComboBoxModel();
+    DecimalFormat df = new DecimalFormat("00");
     /**
      * Creates new form AddMovie
      */
@@ -193,32 +196,30 @@ public class AddMovie extends javax.swing.JFrame {
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 314, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jLabel8))
-                        .add(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                            .add(jPanel1Layout.createSequentialGroup()
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jLabel2)
+                                    .add(jLabel9)
                                     .add(jPanel1Layout.createSequentialGroup()
-                                        .add(6, 6, 6)
-                                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jLabel2)
-                                            .add(jLabel9)
-                                            .add(jPanel1Layout.createSequentialGroup()
-                                                .add(3, 3, 3)
-                                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox1, 0, 165, Short.MAX_VALUE)))))
+                                        .add(3, 3, 3)
+                                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, CategoryBox1, 0, 165, Short.MAX_VALUE)))
                                     .add(jPanel1Layout.createSequentialGroup()
+                                        .add(8, 8, 8)
                                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                            .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                                .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel11)))
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 53, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                                .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel11))
+                                            .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jPanel1Layout.createSequentialGroup()
                                         .add(27, 27, 27)
@@ -244,13 +245,12 @@ public class AddMovie extends javax.swing.JFrame {
                                         .add(AddMovieButton)
                                         .add(31, 31, 31)
                                         .add(jButton2))))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                            .add(jPanel1Layout.createSequentialGroup()
                                 .add(16, 16, 16)
                                 .add(TitleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 217, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(ActorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 205, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(47, 47, 47)))
-                .addContainerGap())
+                                .add(45, 45, 45)
+                                .add(ActorField1)))
+                        .add(47, 47, 47))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -270,22 +270,10 @@ public class AddMovie extends javax.swing.JFrame {
                     .add(jLabel9)
                     .add(ActorField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(ActorField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel11)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(ActorField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
-                        .add(jLabel8)
-                        .add(6, 6, 6)
-                        .add(CategoryBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
                         .add(jLabel10)
                         .add(18, 18, 18)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -296,7 +284,20 @@ public class AddMovie extends javax.swing.JFrame {
                             .add(PGRadio)
                             .add(NC17Radio))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(PG13Radio)))
+                        .add(PG13Radio))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(18, 18, 18)
+                        .add(jLabel11)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jLabel8)
+                        .add(6, 6, 6)
+                        .add(CategoryBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -353,13 +354,6 @@ public class AddMovie extends javax.swing.JFrame {
     private void AddMovieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMovieButtonActionPerformed
         // TODO add your handling code here:
         addMovie();
-        JOptionPane.showMessageDialog(this,
-                "Successfully Added Movie",
-                "Movie Added", 
-                JOptionPane.INFORMATION_MESSAGE);
-        main.addMovieFrame.setVisible(false);
-        main.addMovieFrame = null;
-        main.loginAdminFrame.setVisible(true);
         
     }//GEN-LAST:event_AddMovieButtonActionPerformed
 
@@ -392,28 +386,21 @@ public class AddMovie extends javax.swing.JFrame {
     }
     
     public void addMovie() {
+        
         String title = TitleField.getText();
         
-        if (title==null || title.length() > 80) {
+        if (title.equals("") || title.length() > 80) {
             JOptionPane.showMessageDialog(this,
                     "Invalid Entry for Title");
             return;
         }
-                  
-        int year = 0, month = 0, day = 0, quantity = 0;
-        try {
-            year = Integer.parseInt(ReleaseYear.getText());
-            month = Integer.parseInt(ReleaseMonth.getText());
-            day = Integer.parseInt(ReleaseDay.getText());
-            quantity = Integer.parseInt(QuantityField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, 
-                    "Invalid Input for Release Date"
-                    + "\nor Quantity");
-            return;
-        }
         
-        String rel_date = year + "-" + month + "-" + day;
+        int quantity = getQuantity();
+        if (quantity == -1)
+            return;
+        Date rel_date = getDate();
+        if (rel_date == null)
+            return;
         
         String[] categories = new String[3];
         categories[0]= (String)CategoryBox1.getSelectedItem();
@@ -424,6 +411,12 @@ public class AddMovie extends javax.swing.JFrame {
         actors[0] = ActorField1.getText();
         actors[1] = ActorField2.getText();
         actors[2] = ActorField3.getText();
+        for (int i = 0; i < actors.length; i++) {
+            if (actors[i].length() > 60) {
+                JOptionPane.showMessageDialog(this, 
+                        "Actor name too long for insert");
+            }
+        }
         
         String rating = getRating();
         if (rating==null) {
@@ -442,8 +435,14 @@ public class AddMovie extends javax.swing.JFrame {
         insertActors(actors);
         
         insertCategories(categories);
-        
-        
+         
+        JOptionPane.showMessageDialog(this,
+                "Successfully Added Movie",
+                "Movie Added", 
+                JOptionPane.INFORMATION_MESSAGE);
+        main.addMovieFrame.setVisible(false);
+        main.addMovieFrame = null;
+        main.loginAdminFrame.setVisible(true);
         
     }
     
@@ -505,7 +504,7 @@ public class AddMovie extends javax.swing.JFrame {
     public void insertActors(String[] actors) {
         int insert_index;
         for (int i = 0; i < actors.length; i++) {
-            if (actors[i]==null) {}
+            if (actors[i].equals("")) {System.out.println("Null");}
             else {
                 String bank = "select actor_name from Actor where "
                         + "actor_name='"+actors[i]+"';";
@@ -577,6 +576,56 @@ public class AddMovie extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public Date getDate() {
+        Date date;
+        try {
+            int year = Integer.parseInt(ReleaseYear.getText());
+            int month = Integer.parseInt(ReleaseMonth.getText());
+            int day = Integer.parseInt(ReleaseDay.getText());
+            
+            
+            date = Date.valueOf(
+                    year+"-"+df.format(month)+
+                    "-"+df.format(day));
+            Long check = date.getTime();
+            if (check > System.currentTimeMillis()) {
+                JOptionPane.showMessageDialog(this,
+                        "This date has not occured yet...");
+                return null;
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                    "Invalid Input for Release Date"
+                    + "\nor Quantity");
+            return null;
+        } catch (IllegalArgumentException err) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Date, this date never has\n"
+                    + "existed or hasn't existed to our"
+                    + "knowledge...");
+            return null;
+        }
+        return date;
+    }
+    
+    public int getQuantity() {
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(QuantityField.getText());
+            if (quantity < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Quantity needs to be greater than 0");
+                return -1;
+            }
+        } catch (NumberFormatException err) {
+            JOptionPane.showMessageDialog(this,
+                    "Please input a valid quantity");
+            return -1;
+        }
+        return quantity;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ActorField1;

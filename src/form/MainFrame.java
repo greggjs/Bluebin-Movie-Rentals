@@ -235,14 +235,13 @@ public class MainFrame extends javax.swing.JFrame {
                 + "FROM Movie_Admin where password = '"
                 + pwd + "'";
         String[] admin = null;
-        String pwd_check = null;
 
         if (!checkAdmin(test, pwd))
             return;
 
         admin = doubleSelect(bank);
         
-        if (!checkAdminQuery(admin))
+        if (!checkAdminQuery(admin, pwd))
             return;
         else {  
             this.setVisible(false);
@@ -329,7 +328,8 @@ public class MainFrame extends javax.swing.JFrame {
         return true;
     }
     
-    public boolean checkAdminQuery(String[] admin) {
+    public boolean checkAdminQuery(
+                    String[] admin, String pwd) {
         if (admin[0]==null) {
             JOptionPane.showMessageDialog(this, 
                     "Error, user not found\nError:"
@@ -338,7 +338,7 @@ public class MainFrame extends javax.swing.JFrame {
             this.PasswordField.setText("");
             return false;
         }
-        if (admin[1]==null) {
+        if (!(admin[1].equals(pwd))) {
             JOptionPane.showMessageDialog(this, 
                     "Invalid Password\nError: "
                     + "AdminFoundPwdInvalid");
