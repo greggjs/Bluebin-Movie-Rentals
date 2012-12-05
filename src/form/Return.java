@@ -24,12 +24,17 @@ import movie.*;
  */
 
 /**
- *
- * @author cutnop
+ * Form where users can return movies rented and 
+ * pay late fees.
+ * 
+ * Form by Patrick Cutno, Code by Jake Gregg
+ * @author cutnop, greggjs
  */
 public class Return extends javax.swing.JFrame {
     Main main;
+    // for formatting money...
     NumberFormat nf = NumberFormat.getCurrencyInstance();
+    // for the table...
     Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Rent Date", "Due Date", "Day(s) Late"
@@ -150,6 +155,12 @@ public class Return extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Closes the instance of this frame and returns the user to
+     * the User home page upon a window close
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.returnFrame = null;
@@ -161,6 +172,11 @@ public class Return extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ComponentAdded
 
+    /**
+     * Closes the window and returns to the User home screen.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -168,11 +184,22 @@ public class Return extends javax.swing.JFrame {
         main.loginUserFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Fills the table with all rentals of the User upon
+     * window open.
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         this.fillTable();
     }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Returns a selected movie and charges late fees if any.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         returnMovie();
@@ -183,39 +210,41 @@ public class Return extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
-    
+     * Fills the table with all the User's rentals.
+     */
     public void fillTable() {
         
-        
+        // query to send to the database
         String bank = "select * from Has_Rented where "
                 + "renter_phone=" + main.curr.getPhone()+";";
+        
+        // get the movies to display and store them as
+        // a string array
         StringBuilder new_releases = getMovies(bank);
         String temp = new_releases.toString();
         String [] rel_arr = temp.split("~");
         
+        // create some other arrays for filling in the table
         long[] late_arr = new long[rel_arr.length/4];
         int[] movie_arr = new int[rel_arr.length/4];
         String[] movie_title = new String[rel_arr.length/4];
         
+        // get the movie ids of the rented movies
         int row = 0;
         bank = new String("select movie_name from "
                 + "Movie where movie_id=");
-        String movie = null;
-        
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             movie_arr[row] = Integer.parseInt(rel_arr[i+1]);
             row++;
         }
         
+        // get all the movie names from the movie ids
         row = 0;
-        
         for (int i = 0; i < movie_arr.length; i++) {
-            
             movie_title[i] = getMovieName(bank, movie_arr[i]);
         }
         
+       
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             
             long due_day = 0, curr_day=0, days_late = 0;
@@ -224,7 +253,7 @@ public class Return extends javax.swing.JFrame {
             due_day=due.getTime();
             
             curr_day=System.currentTimeMillis();
-            
+            // calculate each movie's late days
             days_late = curr_day-due_day;
             
             if (days_late > 0)
@@ -232,30 +261,40 @@ public class Return extends javax.swing.JFrame {
             else
                 late_arr[row] = 0;
             
+            // insert each movie into the table
             model.insertRow(row, new Object[]{movie_title[row],
                 rel_arr[i+2], rel_arr[i+3], late_arr[row]});
             row++;
         }
         
     }
-    
+    /**
+     * Returns a selected movie for the user, and charges them
+     * a late fee if applicable.
+     */
     public void returnMovie() {
+        // get the movie to be returned. if none selected, return
         int row_selected = jTable1.getSelectedRow();
         if (row_selected == -1) {
             JOptionPane.showMessageDialog(this,
                     "Please select a movie to return");
             return;
         }  
+        // get the title of the movie to remove
         String movie_title = jTable1.getModel().
                 getValueAt(row_selected, 0).toString();
+        // create a query for deletion
         String bank = new String("delete from Has_Rented "
                 + "where renter_phone='"+main.curr.getPhone())
                 +"' and movie_id=(select movie_id from Movie"
                 + " where movie_name='"+movie_title+"');";
-        
+        // get the days late
         int late_days = Integer.parseInt(jTable1.
                 getModel().getValueAt(row_selected, 3)
                 .toString());
+        // if the movie is late, charge the user a late fee, which
+        // is $1.50 * 0.30 per day late. Do not let them return the 
+        // movie if they decline to pay.
         if (late_days > 0) {
             double late_fee = 1.5+(late_days*.3);
             String disp = nf.format(late_fee);
@@ -267,8 +306,10 @@ public class Return extends javax.swing.JFrame {
                 return;
         }
         
+        // if they pay, return the movie
         prepStm(bank);
         
+        // increment the count of the movie stock.
         bank = "update Movie set quantity"
                 + "=quantity+1 where movie_name"
                 + "='"+movie_title+"';";
@@ -276,28 +317,20 @@ public class Return extends javax.swing.JFrame {
         prepStm(bank);
     }
     
-    private int getDaysInMonth(int month) {
-        int sum = 0;
-        while (month!=0) {
-            if (month==9||month==4||month==6||month==11)
-                sum += 30;
-            else if (month==1||month==3||month==5
-                    ||month==7||month==8||month==10
-                    ||month==12)
-                sum += 31;
-            else
-                sum += 28;
-            month--;
-        }
-        return sum;
-    }
-    
+    /**
+     * Executes a prepared statement such as insertion, deletion,
+     * and update.
+     * 
+     * @param bank query to be executed 
+     */
     private void prepStm(String bank) {
         try {
+            // create a connection
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/"
                     + "fall2012?user=greggjs&password=greggjs");
+            // make a statement and execute it.
             PreparedStatement stm = conn.prepareStatement(bank);
             stm.execute();
         } catch (SQLException err) {
@@ -308,17 +341,27 @@ public class Return extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Get all movies from a selection query.
+     * 
+     * @param bank query to be executed.
+     * @return StringBuilder with results separated by "~" as
+     * a delimiter.
+     */
     public StringBuilder getMovies(String bank) {
         StringBuilder res = new StringBuilder("");
         
         try {
+            // create a connection
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/"
                     + "fall2012?user=greggjs&password=greggjs");
+            // make a statment to execute and result set.
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
+                // store each value sequentially
                 res.append(rs.getString("renter_phone"));
                 res.append("~");
                 res.append(rs.getString("movie_id"));
@@ -335,16 +378,25 @@ public class Return extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-        return res;
+        return res; // return the movies
     }
     
+    /**
+     * Get the movie name for a specific movie ID
+     * 
+     * @param bank query to be executed
+     * @param id movie ID 
+     * @return movie name for given movie ID
+     */
     public String getMovieName(String bank, int id) {
-        String movie = null;
+        String movie = null; // result stored here
         try {
+            // make connection
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                    "jdbc:mysql://localhost:3307/"
                    + "fall2012?user=greggjs&password=greggjs");
+            // make statement and result set
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank+id+";");
             while(rs.next()) {
@@ -356,7 +408,7 @@ public class Return extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
-        return movie;
+        return movie; // return the movie name
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

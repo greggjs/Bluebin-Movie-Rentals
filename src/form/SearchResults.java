@@ -28,7 +28,7 @@ import movie.*;
  * go back to the advanced search menu.
  * 
  * Form by Patrick Cunto, Code by Jake Gregg
- * @author cutnop
+ * @author cutnop, greggjs
  */
 public class SearchResults extends javax.swing.JFrame {
     Main main;
