@@ -123,8 +123,7 @@ public class AddMovie extends javax.swing.JFrame {
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Title Actors");
 
-        CategoryBox1.setBackground(new java.awt.Color(0, 100, 123));
-        CategoryBox1.setForeground(new java.awt.Color(255, 255, 255));
+        CategoryBox1.setBackground(new java.awt.Color(0, 255, 255));
         CategoryBox1.setModel(model1);
 
         QuantityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -183,12 +182,10 @@ public class AddMovie extends javax.swing.JFrame {
             }
         });
 
-        CategoryBox2.setBackground(new java.awt.Color(0, 100, 123));
-        CategoryBox2.setForeground(new java.awt.Color(255, 255, 255));
+        CategoryBox2.setBackground(new java.awt.Color(0, 255, 255));
         CategoryBox2.setModel(model2);
 
-        CategoryBox3.setBackground(new java.awt.Color(0, 100, 123));
-        CategoryBox3.setForeground(new java.awt.Color(255, 255, 255));
+        CategoryBox3.setBackground(new java.awt.Color(0, 255, 255));
         CategoryBox3.setModel(model3);
 
         ReleaseMonth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -238,6 +235,11 @@ public class AddMovie extends javax.swing.JFrame {
                                     .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(AddMovieButton)
+                                .add(31, 31, 31)
+                                .add(jButton2))
+                            .add(jPanel1Layout.createSequentialGroup()
                                 .add(27, 27, 27)
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(org.jdesktop.layout.GroupLayout.TRAILING, ActorField3)
@@ -255,15 +257,8 @@ public class AddMovie extends javax.swing.JFrame {
                                                 .add(PGRadio)
                                                 .add(5, 5, 5)
                                                 .add(NC17Radio)))
-                                        .add(0, 0, Short.MAX_VALUE))))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(AddMovieButton)
-                                .add(31, 31, 31)
-                                .add(jButton2))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(27, 27, 27)
-                                .add(ActorField1)))
+                                        .add(0, 0, Short.MAX_VALUE))
+                                    .add(ActorField1))))
                         .add(47, 47, 47))))
         );
         jPanel1Layout.setVerticalGroup(
