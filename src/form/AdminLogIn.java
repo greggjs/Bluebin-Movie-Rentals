@@ -25,7 +25,7 @@ import movie.*;
  * is closed.
  * 
  * Form by Patrick Cutno, Code written by Jake Gregg
- * @author cutnop
+ * @author cutnop, greggjs
  */
 public class AdminLogIn extends javax.swing.JFrame {
     public Main main;
