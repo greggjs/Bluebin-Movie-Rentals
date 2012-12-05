@@ -17,12 +17,16 @@ import javax.swing.JOptionPane;
 import movie.*;
 
 /**
- *
- * @author smartkid1965
+ * Adds a movie based on form data. 
+ * 
+ * Code and Form by Jake Gregg
+ * @author greggjs
  */
 public class AddMovie extends javax.swing.JFrame {
     Main main;
     int index;
+    
+    // for genre boxes
     DefaultComboBoxModel model1 = new DefaultComboBoxModel();
     DefaultComboBoxModel model2 = new DefaultComboBoxModel();
     DefaultComboBoxModel model3 = new DefaultComboBoxModel();
@@ -337,11 +341,17 @@ public class AddMovie extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Takes the Admin back to the home page upon window close.
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    // Methods that I somehow can't remove...
     private void GRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GRadioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_GRadioActionPerformed
@@ -354,6 +364,11 @@ public class AddMovie extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_NC17RadioActionPerformed
 
+    /**
+     * Takes the Admin back to the Admin home page.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -361,12 +376,22 @@ public class AddMovie extends javax.swing.JFrame {
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Adds the movie to the database and returns to the Admin home
+     * page.
+     * 
+     * @param evt 
+     */
     private void AddMovieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMovieButtonActionPerformed
         // TODO add your handling code here:
         addMovie();
         
     }//GEN-LAST:event_AddMovieButtonActionPerformed
 
+    /**
+     * Initializes all combo boxes with categories from the
+     * database.
+     */
     public void initialize() {
         String bank = "select * from Category;";
         initializeComboBox(bank, model1);
@@ -374,9 +399,15 @@ public class AddMovie extends javax.swing.JFrame {
         initializeComboBox(bank, model3);
     }
     
+    /**
+     * Initializes a specified combo box with a specified query.
+     * 
+     * @param bank query to be executed
+     * @param model combo box to populate
+     */
     public void initializeComboBox(String bank, DefaultComboBoxModel model) {
         
-        model.addElement("");
+        model.addElement(""); // first element always will be null
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -395,9 +426,25 @@ public class AddMovie extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Add a new movie to the database. 
+     */
     public void addMovie() {
         
+        // Title of movie
         String title = TitleField.getText();
+        
+        // query database to check if movie already exists
+        String check = "select movie_name, release_year"
+                + " from Movie "
+                + "where movie_name='"+title+"';";
+        String[] test = movieCheck(check);
+        
+        // make sure the title is correctly formatted.
+        if (title.equals(test)) {
+            JOptionPane.showMessageDialog(this,
+                    "Movie already in database.");
+        }
         
         if (title.equals("") || title.length() > 80) {
             JOptionPane.showMessageDialog(this,
@@ -405,29 +452,48 @@ public class AddMovie extends javax.swing.JFrame {
             return;
         }
         
+        // get the quantity to insert. if it's not correctly
+        // formatted, return.
         int quantity = getQuantity();
         if (quantity == -1)
             return;
+        
+        // get the date inserted. if it's not correctly formatted,
+        // return.
         Date rel_date = getDate();
         if (rel_date == null)
             return;
         
+        // if the movie exists in the databalse, return.
+        if (title.equals(test[0]) &&
+                rel_date.toString().equals(test[1])) {
+            JOptionPane.showMessageDialog(this,
+                    "Movie already in database.");
+            return;
+        }
+        
+        // store the categories to be inserted
         String[] categories = new String[3];
         categories[0]= (String)CategoryBox1.getSelectedItem();
         categories[1]= (String)CategoryBox2.getSelectedItem();
         categories[2]= (String)CategoryBox3.getSelectedItem();
         
+        // store the names of the actors.
         String[] actors = new String[3];
         actors[0] = ActorField1.getText();
         actors[1] = ActorField2.getText();
         actors[2] = ActorField3.getText();
+        
+        // check the actors for correct format.
         for (int i = 0; i < actors.length; i++) {
             if (actors[i].length() > 60) {
                 JOptionPane.showMessageDialog(this, 
                         "Actor name too long for insert");
+                return;
             }
         }
         
+        // get the rating. if it's not selected, return.
         String rating = getRating();
         if (rating==null) {
             JOptionPane.showMessageDialog(this,
@@ -435,27 +501,39 @@ public class AddMovie extends javax.swing.JFrame {
             return;
         }
         
+        // get the index to insert the movie
         index = maxIndex("movie_id", "Movie");
         
+        // insert the movie into the database
         String bank = "insert into Movie values ("+index
                 +",'"+title+"', '"
                 +rel_date+"', '"+rating+"', "+quantity+");";
         insert(bank);
         
+        // insert the actors and connect them to the movie
         insertActors(actors);
         
+        // insert the categorys associated with the movie
         insertCategories(categories);
          
+        // display success.
         JOptionPane.showMessageDialog(this,
                 "Successfully Added Movie",
                 "Movie Added", 
                 JOptionPane.INFORMATION_MESSAGE);
+        
+        // return to the Admin home page.
         main.addMovieFrame.setVisible(false);
         main.addMovieFrame = null;
         main.loginAdminFrame.setVisible(true);
         
     }
     
+    /**
+     * Gets the rating selected by the Admin
+     * 
+     * @return String of rating formatted for SQL insert
+     */
     public String getRating() {
         
         if (GRadio.isSelected())
@@ -472,6 +550,13 @@ public class AddMovie extends javax.swing.JFrame {
             
     }
     
+    /**
+     * Gets the index to insert the next item in the database at.
+     * 
+     * @param type Value to search on
+     * @param table Table to search
+     * @return index to insert next value in in table.
+     */
     public int maxIndex(String type, String table) {
         String bank = "select MAX("+type+") from "+table+";";
         int index = 0;
@@ -492,9 +577,14 @@ public class AddMovie extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
-        return index+1;
+        return index+1; // return 1 greater than what was found.
     }
     
+    /**
+     * Executes insertions
+     * 
+     * @param bank insertion to be executed.
+     */
     public void insert(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -511,31 +601,52 @@ public class AddMovie extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Inserts all actors inputted and connects them. If 
+     * the actor is already in the database, link the right
+     * one in the database with the new movie being inserted.
+     * 
+     * @param actors actors for insertion and connection
+     */
     public void insertActors(String[] actors) {
-        int insert_index;
+        int insert_index; // store the insertion index of last actor
         for (int i = 0; i < actors.length; i++) {
+            // debugging message. Insert only if not null
             if (actors[i].equals("")) {System.out.println("Null");}
             else {
+                
+                // query database to check if actor already exists
                 String bank = "select actor_name from Actor where "
                         + "actor_name='"+actors[i]+"';";
                 String result = search(bank, "actor_name");
+                
+                // if they don't yet, insert and link the new one.
                 if (result==null) {
+                    // get the index to insert the new actor
                     insert_index = maxIndex("actor_id", "Actor");
+                    
+                    // insert the actor
                     bank = "insert into Actor values ("
                             +insert_index
                             +", '"+actors[i]+"');";
                     insert(bank);
+                    
+                    // connect the actor to the movie
                     bank = "insert into Starred_In values ("
                             +insert_index
                             + ", "+index+");";
                     insert(bank);
                 }
+                // if they do, link the new one with the movie
                 else {
+                    // get the index of the actor
                     bank = "select actor_id from Actor "
                             + "where actor_name"
                             + " = '"+actors[i]+"';";
                     int id = Integer.parseInt(search(bank,
                             "actor_id"));
+                    
+                    // connect the actor with the new movie
                     bank = "insert into Starred_In values ("
                             +id+", "+index+");";
                     insert(bank);
@@ -544,14 +655,23 @@ public class AddMovie extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Connects the categories with the new movie.
+     * 
+     * @param categories 
+     */
     public void insertCategories(String[] categories) {
         for (int i = 0; i < categories.length; i++) {
+            // insert if there is a category to insert on
             if (!(categories[i]==null)) {
+                // get the category ID to insert on
                 String bank = "select category_id "
                         + "from Category where category_name = '"
                         +categories[i]+"';";
                 int cat_id = Integer.parseInt(search(bank,
                         "category_id"));
+                
+                // connect the category with the movie
                 bank = "insert into Has_Category values ("+cat_id
                             +", "+index+");";
                 insert(bank);
@@ -560,6 +680,13 @@ public class AddMovie extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Executes selection statements
+     * 
+     * @param bank query to execute
+     * @param query type to return
+     * @return String of result of query.
+     */
     public String search(String bank, String query) {
         String res = null;
         try {
@@ -583,22 +710,65 @@ public class AddMovie extends javax.swing.JFrame {
         
         return res;
     }
-    /**
-     * @param args the command line arguments
-     */
     
+    /**
+     * Checks the movie to be inserted if it's already in 
+     * the database.
+     * 
+     * @param bank query
+     * @return result of query.
+     */
+    public String[] movieCheck(String bank) {
+        String[] res = new String[2];
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3307/fall2012"
+                    + "?user=greggjs&password=greggjs");
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(bank);
+            for (int i =0; rs.next(); i++) {
+                res[0] = rs.getString("movie_name");
+                res[1] = rs.getString("release_year");
+            }
+          
+        } catch (SQLException err) {
+            System.out.println("search problem");
+            err.printStackTrace();
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println ("cannot find driver!");
+        }
+        
+        return res;
+        
+    }
+    
+    /**
+     * Reads the Date inputed on the form and determines if
+     * it is valid.
+     * 
+     * @return the date formatted correctly, else it returns null.
+     */
     public Date getDate() {
+        
+        // value to return.
         Date date;
         try {
+            // get the inputs
             int year = Integer.parseInt(ReleaseYear.getText());
             int month = Integer.parseInt(ReleaseMonth.getText());
             int day = Integer.parseInt(ReleaseDay.getText());
             
-            
+            // convert it to SQL date type
             date = Date.valueOf(
                     year+"-"+df.format(month)+
                     "-"+df.format(day));
+            // get the time in miliseconds
             Long check = date.getTime();
+            
+            // if the date is past the current date, return null
             if (check > System.currentTimeMillis()) {
                 JOptionPane.showMessageDialog(this,
                         "This date has not occured yet...");
@@ -606,11 +776,13 @@ public class AddMovie extends javax.swing.JFrame {
             }
             
         } catch (NumberFormatException e) {
+            // if it's not a number, return null.
             JOptionPane.showMessageDialog(this, 
                     "Invalid Input for Release Date"
                     + "\nor Quantity");
             return null;
         } catch (IllegalArgumentException err) {
+            // if it's not a valid date, return null
             JOptionPane.showMessageDialog(this,
                     "Invalid Date, this date never has\n"
                     + "existed or hasn't existed to our"
@@ -620,16 +792,25 @@ public class AddMovie extends javax.swing.JFrame {
         return date;
     }
     
+    /**
+     * Gets the quantity inputed on the form and returns if
+     * it was correct or not.
+     * 
+     * @return the quantity inputed if formatted correctly, else
+     * it returns -1.
+     */
     public int getQuantity() {
         int quantity = 0;
         try {
+            // if it's not greater than 1, return -1
             quantity = Integer.parseInt(QuantityField.getText());
-            if (quantity < 0) {
+            if (quantity < 1) {
                 JOptionPane.showMessageDialog(this,
-                        "Quantity needs to be greater than 0");
+                        "Quantity needs to be greater than 1");
                 return -1;
             }
         } catch (NumberFormatException err) {
+            // if it's not a number, return -1
             JOptionPane.showMessageDialog(this,
                     "Please input a valid quantity");
             return -1;
