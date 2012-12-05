@@ -14,11 +14,15 @@ import javax.swing.JOptionPane;
 import movie.*;
 
 /**
- *
- * @author smartkid1965
+ * User can update their phone number, credit card,
+ * and password stored in the database.
+ * 
+ * Code and Form by Jake Gregg
+ * @author greggjs
  */
 public class UpdateUser extends javax.swing.JFrame {
     Main main;
+    // for printing out the curr phone and credit card
     String phone;
     String credit_card;
     /**
@@ -264,6 +268,12 @@ public class UpdateUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Closes the instance of this frame and opens the 
+     * User home page.
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         this.setVisible(false);
@@ -271,6 +281,11 @@ public class UpdateUser extends javax.swing.JFrame {
         main.loginUserFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Closes this window and opens the User home page.
+     * 
+     * @param evt 
+     */
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -278,6 +293,11 @@ public class UpdateUser extends javax.swing.JFrame {
         main.loginUserFrame.setVisible(true);
     }//GEN-LAST:event_CancelActionPerformed
 
+    /**
+     * Updates the user's phone number stored.
+     * 
+     * @param evt 
+     */
     private void UpdatePhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdatePhoneActionPerformed
         // TODO add your handling code here:
         updatePhone();
@@ -287,6 +307,11 @@ public class UpdateUser extends javax.swing.JFrame {
         NewPhoneField.setText("");
     }//GEN-LAST:event_UpdatePhoneActionPerformed
 
+    /**
+     * Updates the user's credit card stored.
+     * 
+     * @param evt 
+     */
     private void UpdateCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateCCActionPerformed
         // TODO add your handling code here:
         updateCC();
@@ -296,6 +321,11 @@ public class UpdateUser extends javax.swing.JFrame {
         NewCCField.setText("");
     }//GEN-LAST:event_UpdateCCActionPerformed
 
+    /**
+     * Updates the user's password stored.
+     * 
+     * @param evt 
+     */
     private void ChangePWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangePWActionPerformed
         // TODO add your handling code here:
         updatePW();
@@ -304,20 +334,23 @@ public class UpdateUser extends javax.swing.JFrame {
         NewPWField.setText("");
         ConfirmPWField.setText("");
     }//GEN-LAST:event_ChangePWActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
     
+    /**
+     * Gets the user's credit card stored in the database for
+     * display purposes.
+     */
     public void getCC() {
+        // query to get the cc
         String bank = "select credit_card "
                 + "from Renter where "
                 + "renter_phone='"+phone+"';";
         try {
+            // make connection
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/fall2012?"
                     + "user=greggjs&password=greggjs");
+            // make statment and result set
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while (rs.next()) {
@@ -333,10 +366,19 @@ public class UpdateUser extends javax.swing.JFrame {
         
     }
     
+    /**
+     * Updates the user's password in the database
+     * to a new one. It ensures that all inputs 
+     * are correct.
+     */
     public void updatePW() {
+        
+        // arrays to store the passwords in
         char[] old_pw_arr, new_pw_arr, confirm_pw_arr;
         String check = null, test = null, bank, old_pw,
                 new_pw, confirm_pw;
+        // once each password is read, it must be converted
+        // to a String.
         old_pw_arr = OldPWField.getPassword();
         old_pw = new String(old_pw_arr);
         new_pw_arr = NewPWField.getPassword();
@@ -344,13 +386,14 @@ public class UpdateUser extends javax.swing.JFrame {
         confirm_pw_arr = ConfirmPWField.getPassword();
         confirm_pw = new String(confirm_pw_arr);
         
-        
+        // if any field is blank, return.
         if (old_pw == null || new_pw==null 
                 || confirm_pw==null) {
             JOptionPane.showMessageDialog(this,
                     "Please fill out all fields");
             return;
         }
+        // if any field is too long, return.
         else if (old_pw.length() > 20 || 
                 new_pw.length() > 20 || 
                 confirm_pw.length() > 20) {
@@ -359,19 +402,26 @@ public class UpdateUser extends javax.swing.JFrame {
             return;
         }
         
+        // make a query to get the old password
         bank = "select password from Renter where "
                 + "renter_phone='"+phone+"';";
         test = selectStm(bank, "password");
+        // if the inputed password is not the same as 
+        // the one on file, return.
         if (!(old_pw.equals(test))) {
             JOptionPane.showMessageDialog(this,
                     "Incorrect Old Password");
             return;
         }
+        // if the new password equals the old password 
+        // stored, return.
         else if (new_pw.equals(test)) {
             JOptionPane.showMessageDialog(this,
                     "Please enter a new Password");
             return;
         }
+        // if the new password and confirm password fields
+        // do not match, return.
         else if (!(new_pw.equals(confirm_pw))) {
             JOptionPane.showMessageDialog(this,
                     "Please Ensure you Confirm "
@@ -379,19 +429,27 @@ public class UpdateUser extends javax.swing.JFrame {
             return;
         }
         
+        // update the user's password
         bank = "update Renter set password = '"+new_pw
                 +"' where renter_phone = '"+phone+"';";
         prepStm(bank);
         
+        // inform the user it updated successfully.
         JOptionPane.showMessageDialog(this,
                 "Successfully Updated Password", 
                 "Success", JOptionPane.INFORMATION_MESSAGE);
     }
     
+    /**
+     * Updates the User's phone number in the database
+     * to a new one. Checks for correct formatting as well
+     */
     public void updatePhone() {
+        // get the new number
         String test = NewPhoneField.getText();
         
         try {
+            // if it's not a number, return
             Long.parseLong(test);
             if (test.equals("")) {
                 JOptionPane.showMessageDialog(this, 
@@ -399,6 +457,7 @@ public class UpdateUser extends javax.swing.JFrame {
                     + "\nError: NullPhone");
                 return;
             }
+            // if it's not the right format, return
             else if (test.length()!=10) {
                 JOptionPane.showMessageDialog(this, 
                     "Please enter a vlid phone number"
@@ -414,37 +473,50 @@ public class UpdateUser extends javax.swing.JFrame {
             return;
         }
         
+        // get the user's old number in the database
         String bank = "select renter_phone from "
                 + "Renter where renter_name = '"+
                 main.curr.getName()+"';";
         String check = selectStm(bank, "renter_phone");
         
+        // if the two numbers are equal then return
         if (test.equals(check)) {
             JOptionPane.showMessageDialog(
                     this, "Please enter a new Phone Number");
             return;
         }
         
+        // update the user's number
         bank = "update Renter set renter_phone='"+
                 test+"' where renter_phone='"+phone+"';";
         prepStm(bank);
         
+        // update all instances of the number in the
+        // Has_Rented table.
         bank = "update Has_Rented set renter_phone='"+
                 test+"' where renter_phone='"+phone+"';";
         prepStm(bank);
         
+        // Success displayed to user
         JOptionPane.showMessageDialog(this,
                 "Successfully Updated Phone", 
                 "Success", JOptionPane.INFORMATION_MESSAGE);
         
+        // reset the credentials for the user to be displayed
         phone = test;
         main.curr.setPhone(test);
     }
     
+    /**
+     * Updates the User's credit card number in the database
+     * to a new one.
+     */
     public void updateCC() {
+        // get the new credit card from the user
         String test = NewCCField.getText();
         String bank, check = null;
         try {
+            // if it ain't a number, return
             Long.parseLong(test);
             if (test.equals("")) {
                 JOptionPane.showMessageDialog(this, 
@@ -452,6 +524,7 @@ public class UpdateUser extends javax.swing.JFrame {
                     + "\nError: NullCrCd");
                 return;
             }
+            // if it ain't a credit card, return
             else if (test.length()!=16) {
                 JOptionPane.showMessageDialog(this, 
                     "Please enter a vlid credit card"
@@ -467,29 +540,37 @@ public class UpdateUser extends javax.swing.JFrame {
             return;
         }
         
+        // get the old credit card number from the database
         bank = "select credit_card from Renter"
                 + " where renter_phone='"+
                 main.curr.getPhone()+"';";
-        
         check = selectStm(bank, "credit_card");
         
+        // if the old and new ones match, return
         if (test.equals(check)) {
             JOptionPane.showMessageDialog(
                     this, "Please enter a new Credit Card");
             return;
         }
         
+        // update the credit card to the new one
         bank = "update Renter set credit_card = '"+test
                 +"' where renter_phone = '"
                 +main.curr.getPhone()+"';";
         prepStm(bank);
         
+        // success dialog shown
         JOptionPane.showMessageDialog(this,
                 "Successfully Updated Credit Card", 
                 "Success", JOptionPane.INFORMATION_MESSAGE);
         
     }
     
+    /**
+     * Executes an insert, deletion, or update
+     * 
+     * @param bank query to be executed
+     */
     public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -506,6 +587,13 @@ public class UpdateUser extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Executes a selection and returns it as a String
+     * 
+     * @param bank query to be sent
+     * @param query type to return
+     * @return result as a String
+     */
     public String selectStm(String bank, String query) {
         String check = null;
         try {

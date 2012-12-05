@@ -22,21 +22,28 @@ import movie.*;
  */
 
 /**
- *
+ * Look at the quantity of a specified movie, add more
+ * movies, or remove all copies of the specified movie.
+ * 
+ * Form by Patrick Cutno, Code by Jake Gregg
  * @author cutnop
  */
 public class MovieStatus extends javax.swing.JFrame {
     Main main;
+    
+    // vars for display
     String id;
     String title;
     int stock, rented, total;
+    
+    // vars for table
     Object [][] data = null;
     String[] col = new String [] {
                 "Name", "Rent Date", "Due Date"
             };
     DefaultTableModel model = new DefaultTableModel(data, col);
     
-    /** Creates new  */
+    /** Creates new  MovieStatus */
     public MovieStatus(Main main, String id) {
         this.main = main;
         this.id = id;
@@ -220,6 +227,12 @@ public class MovieStatus extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Adds copies of the specified movie and redraws 
+     * all necessary form data.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         addCopies();
@@ -232,22 +245,43 @@ public class MovieStatus extends javax.swing.JFrame {
         fillTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Closes the window and returns to the Admin homepage.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Opens the Admin homepage upon window close
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Fills the table with all renters of a specified movie
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         fillTable();
     }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Removes all copies of a specified movie and redraws all
+     * necessary form data.
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         removeAllCopies();
@@ -261,44 +295,40 @@ public class MovieStatus extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
-    
+     * Initializes all form data labels.
+     */
     public void initialize() {
+        // query database for the movie name of the given 
+        // movie id.
         String bank = "select movie_name from Movie"
                 + " where movie_id="+id+";";
-        title = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/"
-                    + "fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(bank);
-            while(rs.next()) {
-                title = rs.getString("movie_name");
-            }
-            
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        title = selectStm(bank, "movie_name");
         
+        // get the quantity in stock of the movie
         bank = "select quantity from Movie where movie_id="
                 +id+";";
-        stock = getQuantity(bank, "quantity");
+        stock = Integer.parseInt(selectStm(bank, "quantity"));
         
+        // get the quantity rented of the movie 
         bank = "select COUNT(movie_id) from Has_Rented "
                 + "where movie_id="+id+";";
-        rented = getQuantity(bank, "count(movie_id)");
+        rented = Integer.parseInt(selectStm(
+                bank, "count(movie_id)"));
         
+        // calculate the total movies
         total = stock+rented;
            
     }
     
-    private int getQuantity(String bank, String query) {
-        int n = 0;
+    /**
+     * Executes select statements
+     * 
+     * @param bank query to be executed
+     * @param query return variable type
+     * @return result as a String
+     */
+    private String selectStm(String bank, String query) {
+        String res = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
@@ -307,7 +337,7 @@ public class MovieStatus extends javax.swing.JFrame {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
-                n = rs.getInt(query);
+                res = rs.getString(query);
             }
             
         } catch (SQLException err) {
@@ -317,10 +347,14 @@ public class MovieStatus extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-        return n;
+        return res;
     }
     
+    /**
+     * Fill the table with all renters of specified movie.
+     */
     public void fillTable() {
+        // get all the renters of a specified movie.
         String bank = "select renter_name, rent_date, due_date"
                 + " from Renter natural join Has_Rented"
                 + " where movie_id="+id+";";
@@ -349,8 +383,11 @@ public class MovieStatus extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
+        // convert the results to a String[]
         String new_releases_s = new_releases.toString();
         String [] rel_arr = new_releases_s.split("~");
+        
+        // fill the table with the data
         int row = 0;
         for (int i = 0; i < rel_arr.length-2; i+=3) {
             model.insertRow(row, new Object[]{rel_arr[i],
@@ -359,10 +396,16 @@ public class MovieStatus extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Removes all copies of a specified movie in stock.
+     */
     private void removeAllCopies() {
+        // query that removes all movies in stock
         String bank = "update Movie set quantity=0 where movie_id="
                 +id+";";
         
+        // asks user if they're sure they want to. If not,
+        // return.
         int choice = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to remove\n"
                 + "all copies of \""+title+"\"?",
@@ -370,28 +413,20 @@ public class MovieStatus extends javax.swing.JFrame {
         if (choice == JOptionPane.NO_OPTION)
             return;
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/fall2012"
-                    + "?user=greggjs&password=greggjs");
-            PreparedStatement stm = conn.prepareStatement(bank);
-            stm.execute();
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(this,
-                    "You already rented this movie...");
-            return;
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
-        
+        // execute the update statement to remove all copies.
+        prepStm(bank);
         
     }
     
+    /**
+     * Add copies of a specified movie in the database.
+     */
     private void addCopies() {
+        // gets the new quantity to be inserted
         int new_q=0;
         while(true) {
         try {
+            // gets it in a InputDialog.
             new_q = Integer.parseInt(JOptionPane.showInputDialog(
                     this, "How many copies would you like to add?"));
             break;
@@ -400,9 +435,19 @@ public class MovieStatus extends javax.swing.JFrame {
                         "Please insert a valid quantity");
             }   
         }
+        
+        // inserts the new quantity into the database.
         String bank = "update Movie set quantity=quantity+"
                 +new_q+" where movie_id="+id+";";
-        
+        prepStm(bank);
+    }
+    
+    /**
+     * Executes insertions, deletions, and updates.
+     * 
+     * @param bank query to be executed.
+     */
+    public void prepStm(String bank) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
