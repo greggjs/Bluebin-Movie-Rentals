@@ -1,0 +1,21 @@
+
+
+CmdLine:	C:\Users\Jake Gregg\Documents\GitHub\Bluebin-Movie-Rentals\BluebinMovieRentals.exe --l4j-debug
+WOW64:		yes
+Check launcher:	 (n/a)
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Match:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Match:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0
+Using 64-bit runtime.
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+32-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check launcher:	C:\Program Files\Java\jre7\bin\javaw.exe (OK)
+Add classpath:	lib\mysql-connector-java-5.1.22-bin.jar
+Add classpath:	lib\swing-layout-1.0.4.jar
+Add classpath:	lib\eclipselink-2.3.2.jar
+Add classpath:	lib\javax.persistence-2.0.3.jar
+Add classpath:	lib\org.eclipse.persistence.jpa.jpql_1.0.1.jar
+Launcher:	C:\Program Files\Java\jre7\bin\javaw.exe
+Launcher args:	-classpath "C:\Users\Jake Gregg\Documents\GitHub\Bluebin-Movie-Rentals\BluebinMovieRentals.exe;lib\mysql-connector-java-5.1.22-bin.jar;lib\swing-layout-1.0.4.jar;lib\eclipselink-2.3.2.jar;lib\javax.persistence-2.0.3.jar;lib\org.eclipse.persistence.jpa.jpql_1.0.1.jar" movie.Main
+Args length:	278/32768 chars
+Exit code:	0
