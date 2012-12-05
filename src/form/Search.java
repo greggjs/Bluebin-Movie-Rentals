@@ -21,18 +21,24 @@ import movie.*;
  */
 
 /**
- *
+ * Advanced Search screen, which allows the user to search by genre,
+ * title/keyword, release year, rating, or actor. User must specify
+ * which one to search on by clicking the appropriate button.
+ * 
+ * Form created by Patrick Cunto, Code by Jake Gregg
  * @author cutnop
  */
 public class Search extends javax.swing.JFrame {
     Main main;
+    // These models contain all the categories,
+    // actors, and release years.
     DefaultComboBoxModel model1;
     DefaultComboBoxModel model2;
     DefaultComboBoxModel model3;
     /** Creates new  */
     public Search(Main main) {
         this.main = main;
-        initialize();
+        initialize(); // fill combo boxes
         initComponents();
         TitleRadio.setSelected(true);
         PG13Radio.setSelected(true);
@@ -355,6 +361,12 @@ public class Search extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Closes out the Advanced Search screen and returns the user back
+     * to the New Releases screen.
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.rentFrame.fillTable();
@@ -362,11 +374,18 @@ public class Search extends javax.swing.JFrame {
         main.rentFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Fills the combo boxes when the form is opened.
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         initialize();
     }//GEN-LAST:event_formWindowOpened
 
+    // These methods are no longer implemented, but I cannot get
+    // of them....
     private void YearBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YearBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_YearBoxActionPerformed
@@ -379,6 +398,12 @@ public class Search extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_SearchFieldActionPerformed
 
+    /**
+     * Searches for a specified actor and returns the movies they
+     * starred in on a new screen.
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -387,6 +412,11 @@ public class Search extends javax.swing.JFrame {
         main.searchResultsFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Returns the user to the New Releases screen upon click.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -395,37 +425,67 @@ public class Search extends javax.swing.JFrame {
         main.rentFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Searches by a specific movie title or by a keyword and
+     * displays the movies found in a new window.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         searchTitleOrKeyword();
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Searches by genre and returns the movies found in a new window.
+     * 
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         searchGenre();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    /**
+     * Searches by rating and returns the movies found 
+     * in a new window.
+     * 
+     * @param evt 
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         searchRating();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /**
+     * Searches by the year released and returns the movies found
+     * in a new window.
+     * 
+     * @param evt 
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         searchReleaseYear();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    /**
+     * Initializes all the combo boxes with categories,
+     * actors, and release years.
+     * 
+     */
     public void initialize() {
+        // initialize category combo box
         String bank = "select category_name from Category;";
-        String[] cat_arr = new String[30];
         model1 = new DefaultComboBoxModel();
         comboStm(bank, "category_name", model1);
         
+        // initialize actor combo box
         bank = "select actor_name from Actor";
         model2 = new DefaultComboBoxModel();
         comboStm(bank, "actor_name", model2);
-        
+       
+        // initialize release year combo box
         model3 = new DefaultComboBoxModel();
         model3.addElement("");
         for (int i = 1920; i < 2013; i++) {
@@ -434,39 +494,45 @@ public class Search extends javax.swing.JFrame {
         
     }
     
+    /**
+     * Searches the database for a specific movie title or
+     * a keyword of the movie title and takes the user to
+     * a separate window to display the results.
+     */
     public void searchTitleOrKeyword() {
+        // Get the title/keyword to be searched
         String search = SearchField.getText();
-        String bank=null;
+        String bank=null; // for query
         
+        // if it's not valid, return
         if (search.length() > 80 || search==null) {
             JOptionPane.showMessageDialog(
                     this, "Incorrect Search Value");
             return;
         }
         
+        // make title query if it's selected
         if (TitleRadio.isSelected()) {
             
             bank = "select * from Movie "
                     + "where movie_name='"+search+"';";
         }
-        
+        // else make keyword query
         else if (KeywordRadio.isSelected()) {
             
             bank = "select * from Movie where "
                     + "movie_name like '%"+search+"%';";
         }
         
+        // get the results of the query
         StringBuilder res = getMovies(bank);
         
+        // open a new frame to display the results
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
-   
-    /**
-    * @param args the command line arguments
-    */
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ActorBox;
     private javax.swing.JRadioButton GRadio;
@@ -498,27 +564,44 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Searches the database for all the movies with a 
+     * specific genre and displays the results in a 
+     * separate window.
+     */
     public void searchGenre() {
+        // get the genre to search on. If none is selected,
+        // return.
         String genre = (String)GenreBox.getSelectedItem();
         if (genre==null) {
             JOptionPane.showMessageDialog(this, "Please select a genre");
             return;
         }
+        
+        // make the query
         String bank = "select * from Movie "
                 + "natural join Has_Category natural "
                 + "join Category where category_name='"
                 +genre+"';";
         
+        // get the movies from the database
         StringBuilder res = getMovies(bank);
         
+        // launch a new window and display the results.
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
     
+    /**
+     * Searches the database for all the movies with a 
+     * specific rating and displays the results in a 
+     * separate window.     
+     */
     public void searchRating() {
-        String bank=null;
+        String bank=null; // string for query
         
+        // determine which rating to search on
         if (GRadio.isSelected()) {
             bank = "select * from Movie where rating="
                     + "'"+GRadio.getText()+"';";
@@ -540,59 +623,87 @@ public class Search extends javax.swing.JFrame {
                     + "'NC17';";
         }
         
+        // query the database for the movies
         StringBuilder res = getMovies(bank);
         
+        // launch a new window and display the results
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
     
+    /**
+     * Searches the database for all the movies with a 
+     * specific release year and displays the results in a 
+     * separate window.
+     */
     public void searchReleaseYear() {
-        int year;
-        year = (Integer)YearBox.getSelectedItem();
+        
+        // get the year to search on. if it's null, return.
+        int year = (Integer)YearBox.getSelectedItem();
         if (year==0) {
             JOptionPane.showMessageDialog(this,
                     "Please select a year");
             return;
         }
+        // make the query
         String bank = "select * from Movie "
                 + "where release_date > '"
                 +year+"-01-01' and release_date <"
                 + " '"+year+"-12-31';";
-        
+        // query the database
         StringBuilder res = getMovies(bank);
         
+        // make a new window and display the results to the user
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
     
+    /**
+     * Searches the database for all the movies with a 
+     * specific actor and displays the results in a 
+     * separate window.
+     */
     public void searchActor() {
+        
+        // get the actor to be queried. If it's null, return
         String actor = (String)ActorBox.getSelectedItem();
         if (actor==null) {
             JOptionPane.showMessageDialog(this,
                     "Please select a actor");
             return;
         }
+        // make the query
         String bank = "select * from Movie "
                 + "natural join Starred_In natural "
                 + "join Actor where actor_name='"
                 +actor+"';";
-        
+        // execute the query
         StringBuilder res = getMovies(bank);
         
+        // make a new window and display the results to the user
         main.searchFrame.setVisible(false);
         main.searchResultsFrame = new SearchResults(main, res);
         main.searchResultsFrame.setVisible(true);
     }
 
+    /**
+     * Returns the movies for a given query.
+     * 
+     * @param bank query to be sent
+     * @return all the movies separated by "~" for conversion
+     * into a string array.
+     */
     public StringBuilder getMovies(String bank) {
-        StringBuilder res = new StringBuilder();
+        StringBuilder res = new StringBuilder(); // store results
         try {
+            // make a connection to the database
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/fall2012"
                     + "?user=greggjs&password=greggjs");
+            // make stamement to be sent
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             for (int i =0; rs.next(); i++) {
@@ -612,13 +723,23 @@ public class Search extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
+        // return the results
         return res;
     }
     
+    /**
+     * Queries the database to fill combo boxes.
+     * 
+     * @param bank query to be sent
+     * @param type type to be searched on
+     * @param model model to fill
+     */
     public void comboStm(String bank, String type,
             DefaultComboBoxModel model) {
+        // make the first element blank
         model.addElement("");
         try {
+            // connect and make a new result set
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/fall2012"
@@ -626,8 +747,8 @@ public class Search extends javax.swing.JFrame {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             for (int i =0; rs.next(); i++) {
+                // add each element as it comes sequencially
                 model.addElement(rs.getString(type));
-                //cat_arr[i] = rs.getString("category_name");
             }
           
         } catch (SQLException err) {
