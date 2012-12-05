@@ -21,13 +21,19 @@ import movie.*;
  */
 
 /**
- *
- * @author cutnop
+ * Checks out what movies a renter has out
+ * 
+ * Form by Patrick Cutno, Code by Jake Gregg
+ * @author cutnop, greggjs
  */
 public class RenterStatus extends javax.swing.JFrame {
     Main main;
+    
+    // vars for Renter info
     String phone;
     String name;
+    
+    // vars for table
     Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Rent Date", "Due Date", "Days Late"
@@ -164,6 +170,11 @@ public class RenterStatus extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Returns the Admin back to the Admin home page.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -171,46 +182,60 @@ public class RenterStatus extends javax.swing.JFrame {
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Returns the Admin back to the Admin home page upon
+     * window close.
+     * 
+     * @param evt 
+     */
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         main.renterStatusFrame = null;
         main.loginAdminFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    /**
+     * Fills the table with renter data upon window open.
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         fillTable();
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
-    
-    
+     * Fills the table with specified renter data.
+     */
     public void fillTable() {
         
+        // query to get renter info
         String bank = "select * from Has_Rented where "
                 + "renter_phone=" + phone +";";
         StringBuilder new_releases = getMovies(bank);
         
+        // convert results to String array
         String new_releases_s = new_releases.toString();
         String [] rel_arr = new_releases_s.split("~");
         
+        // vars for inserting into table
         long[] late_arr = new long[rel_arr.length/4];
         int[] movie_arr = new int[rel_arr.length/4];
         String[] movie_title = new String[rel_arr.length/4];
+        
+        // get all the movie names for what they have rented
         int row = 0;
         bank = new String("select movie_name from Movie "
                 + "where movie_id=");
-        String movie = null;
         
+        // get all the movie ids
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             movie_arr[row] = Integer.parseInt(rel_arr[i+1]);
             row++;
         }
         
+        // get all the movie titles from movie ids
         row = 0;
-        
         for (int i = 0; i < movie_arr.length; i++) {
             
             movie_title[i] = getMovie(bank, movie_arr[i]);
@@ -218,6 +243,7 @@ public class RenterStatus extends javax.swing.JFrame {
         
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             
+            // get due dates and rent days
             long due_day = 0, curr_day=0, days_late = 0;
             
             Date due=Date.valueOf(rel_arr[i+3]);
@@ -225,6 +251,7 @@ public class RenterStatus extends javax.swing.JFrame {
             
             curr_day=System.currentTimeMillis();
             
+            // calc late days and display if they have late movies
             days_late = curr_day-due_day;
             
             if (days_late > 0)
@@ -232,6 +259,7 @@ public class RenterStatus extends javax.swing.JFrame {
             else
                 late_arr[row] = 0;
             
+            // insert movies into table
             model.insertRow(row, new Object[]{movie_title[row],
                 rel_arr[i+2], rel_arr[i+3], late_arr[row]});
             row++;
@@ -239,7 +267,13 @@ public class RenterStatus extends javax.swing.JFrame {
         
     }
    
-
+    /**
+     * Gets movie info from Movie ID
+     * 
+     * @param bank query to be executed
+     * @param id Movie ID
+     * @return Movie Name
+     */
     public String getMovie(String bank, int id) {
         String movie = null;
         try {
@@ -261,6 +295,12 @@ public class RenterStatus extends javax.swing.JFrame {
         return movie;
     }
     
+    /**
+     * Gets all movies of Renter
+     * 
+     * @param bank query to get all movies
+     * @return all movies of Renter
+     */
     public StringBuilder getMovies(String bank) {
         StringBuilder res = new StringBuilder("");
         try {
