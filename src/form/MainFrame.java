@@ -374,10 +374,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         // catch all appropriate exceptions
         } catch (SQLException err) {
+            JOptionPane.showMessageDialog(this, err.getMessage());
             System.out.println("problem has occurred");
             err.printStackTrace();
             return null;
         } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
             System.out.println ("cannot find driver!");
         }
         return ret; // return the results

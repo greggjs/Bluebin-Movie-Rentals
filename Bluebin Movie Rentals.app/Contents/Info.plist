@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleName</key>
+	<string>Bluebin Movie Rentals</string>
+	<key>CFBundleIdentifier</key>
+	<string>movie.Main</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaApplicationStub</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIconFile</key>
+	<string>bluebin.icns</string>
+	<key>Java</key>
+	<dict>
+		<key>MainClass</key>
+		<string>movie.Main</string>
+		<key>JVMVersion</key>
+		<string>1.5+</string>
+		<key>ClassPath</key>
+			<array>
+			<string>$JAVAROOT/385FinalProject.jar</string>
+			<string>$JAVAROOT/eclipselink-2.3.2.jar</string>
+			<string>$JAVAROOT/javax.persistence-2.0.3.jar</string>
+			<string>$JAVAROOT/mysql-connector-java-5.1.22-bin.jar</string>
+			<string>$JAVAROOT/org.eclipse.persistence.jpa.jpql_1.0.1.jar</string>
+			<string>$JAVAROOT/swing-layout-1.0.4.jar</string>
+			</array>
+	</dict>
+</dict>
+</plist>
