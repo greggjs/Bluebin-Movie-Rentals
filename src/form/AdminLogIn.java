@@ -18,7 +18,13 @@ import movie.*;
  */
 
 /**
- *
+ * This is the main page for Admins of the system. They
+ * are able to search the status of movies and renters,
+ * and can add new movies. They are also permitted to 
+ * logout. Logout is also performed when the window 
+ * is closed.
+ * 
+ * Form by Patrick Cutno, Code written by Jake Gregg
  * @author cutnop
  */
 public class AdminLogIn extends javax.swing.JFrame {
@@ -195,31 +201,26 @@ public class AdminLogIn extends javax.swing.JFrame {
         main.frame.setVisible(true);
     }//GEN-LAST:event_WindowClosing
 
+    
+    /**
+     * Performs a search on a specific movie title after the
+     * appropriate button is selected. 
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
+        // Initialize some strings for querying
         String input = MovieTitleField.getText();
-        String title_bank = "select movie_id from Movie "
+        String bank = "select movie_id from Movie "
                 + "where movie_name='"+input+"';";
         String movie_id = null;
         
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/"
-                    + "fall2012?user=greggjs&password=greggjs");
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(title_bank);
-            while(rs.next()) {
-                movie_id = rs.getString("movie_id");
-            }
-
-        } catch (SQLException err) {
-            System.out.println("problem has occurred");
-        } catch (ClassNotFoundException e) {
-            System.out.println ("cannot find driver!");
-        }
+        // Get the movie ID we're searching on
+        movie_id = selectStm(bank, "movie_id");
         
+        // if the movie ID is null, do not proceed
         if (movie_id==null) {
             JOptionPane.showMessageDialog(this,
                     "No movie exists in database."
@@ -227,7 +228,7 @@ public class AdminLogIn extends javax.swing.JFrame {
             return;
         }
         
-        
+        // clear out the TextFields and display the results
         MovieTitleField.setText(null);
         RenterPhoneField.setText(null);
         main.movieStatusFrame = new MovieStatus(main, movie_id);
@@ -235,13 +236,51 @@ public class AdminLogIn extends javax.swing.JFrame {
         main.movieStatusFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Performs a search on a specific user based on their
+     * phone number when the appropriate button is selected.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
+        // Initialize some strings for querying
         String phone = RenterPhoneField.getText();
-        String title_bank = "select renter_name from Renter "
+        String bank = "select renter_name from Renter "
                 + "where renter_phone='"+phone+"';";
         String name = null;
+        
+        // Get the name of the person we're searching on
+        name = selectStm(bank, "renter_name");
+        
+        // if the name isn't in the database, do not proceed
+        if (name==null) {
+            JOptionPane.showMessageDialog(this,
+                    "No renter exists in database."
+                    + "\nError: NullId");
+            return;
+        }
+        
+        // clear out the TextFields and display the results
+        MovieTitleField.setText(null);
+        RenterPhoneField.setText(null);
+        main.renterStatusFrame = 
+                new RenterStatus(main, phone, name);
+        this.setVisible(false);
+        main.renterStatusFrame.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Performs a specified select statement and returns
+     * the result as a String
+     * 
+     * @param bank the select query in MySQL syntax
+     * @param type the data field returned from the query
+     * @return the result of the query
+     */
+    public String selectStm(String bank, String type) {
+        String ret = null;
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -249,9 +288,9 @@ public class AdminLogIn extends javax.swing.JFrame {
                     "jdbc:mysql://localhost:3307/"
                     + "fall2012?user=greggjs&password=greggjs");
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(title_bank);
+            ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
-                name = rs.getString("renter_name");
+                ret = rs.getString(type);
             }
 
         } catch (SQLException err) {
@@ -260,19 +299,15 @@ public class AdminLogIn extends javax.swing.JFrame {
             System.out.println ("cannot find driver!");
         }
         
-        if (name==null) {
-            JOptionPane.showMessageDialog(this,
-                    "No renter exists in database."
-                    + "\nError: NullId");
-            return;
-        }
         
-        main.renterStatusFrame = 
-                new RenterStatus(main, phone, name);
-        this.setVisible(false);
-        main.renterStatusFrame.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+        return ret;
+    }
+    
+    /**
+     * Performs a logout of the Admin and returns to the main frame.
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -280,6 +315,11 @@ public class AdminLogIn extends javax.swing.JFrame {
         main.frame.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Closes the current window and opens the add movie frame
+     * 
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         
@@ -292,12 +332,6 @@ public class AdminLogIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
-    /**
-    * @param args the command line arguments
-    */
-   
-    
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField MovieTitleField;

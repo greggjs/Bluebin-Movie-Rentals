@@ -1,6 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Main.java
+ * By Jake Gregg
+ * 
+ * This is where the program starts. This class stores all the
+ * instances of all the frames, plus it stores information
+ * about the current renter in curr. It starts a new instance
+ * of Main and generates the first instance of MainFrame.
  */
 package movie;
 import form.*;
@@ -13,6 +18,8 @@ import java.util.*;
  */
 public class Main {
 
+    // Each frame is stored here in Main, where it 
+    // is opened and closed from.
     public MainFrame frame;
     public UserLogIn loginUserFrame;
     public AdminLogIn loginAdminFrame;
@@ -26,10 +33,14 @@ public class Main {
     public AddMovie addMovieFrame;
     public UpdateUser updateUserFrame;
     
-    public ArrayList<Movie> movies = new ArrayList<Movie>();
+    // This holds all information about the renter
+    // that we need, which is their phone and 
+    // name.
     public Renter curr = new Renter();
     
     /**
+     * This creates a new instance of Main and starts it.
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -44,9 +55,18 @@ public class Main {
                     .log(Level.SEVERE, "Error setting LaF", ex); 
         }
     }
-    public Main() {
-        
-    }
+    
+    /**
+     * This constructor for main is the default, and 
+     * contains no information.
+     */
+    public Main() {}
+    
+    /**
+     * When this is called, only the main page and the 
+     * new user pages are created. It then displays the 
+     * main page.
+     */
     public void run() {
         frame = new MainFrame(this);
         newAccountFrame = new NewAccountPage(this);
