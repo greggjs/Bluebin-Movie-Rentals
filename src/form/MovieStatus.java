@@ -97,6 +97,7 @@ public class MovieStatus extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jButton2.setBackground(new java.awt.Color(0, 100, 123));
+        jButton2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +106,7 @@ public class MovieStatus extends javax.swing.JFrame {
         });
 
         jButton3.setBackground(new java.awt.Color(0, 100, 123));
+        jButton3.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton3.setText("Change Movie Stock");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,12 +118,15 @@ public class MovieStatus extends javax.swing.JFrame {
         RenterTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(RenterTable);
 
+        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Available Copys");
 
+        jLabel3.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Rented Copys");
 
+        jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Total Copys");
 
@@ -130,15 +135,19 @@ public class MovieStatus extends javax.swing.JFrame {
         TitleLabel.setText("Status for \"" + title+"\"");
         TitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        AvailableLabels.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         AvailableLabels.setForeground(new java.awt.Color(255, 255, 255));
         AvailableLabels.setText(stock+"");
 
+        RentedLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         RentedLabel.setForeground(new java.awt.Color(255, 255, 255));
         RentedLabel.setText(rented+"");
 
+        TotalLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         TotalLabel.setForeground(new java.awt.Color(255, 255, 255));
         TotalLabel.setText(""+total);
 
+        jButton1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton1.setText("Remove All Copies");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,7 +163,7 @@ public class MovieStatus extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,8 +185,8 @@ public class MovieStatus extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(58, 58, 58)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -202,7 +211,7 @@ public class MovieStatus extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)

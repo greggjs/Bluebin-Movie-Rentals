@@ -88,37 +88,37 @@ public class AddMovie extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 100, 123));
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Add New Movie");
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Title");
 
-        jLabel8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Category");
 
-        jLabel9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Release Date (YYYY-MM-DD)");
 
-        jLabel10.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Rating");
 
-        jLabel11.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Quantity");
 
-        jLabel12.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Title Actors");
@@ -138,6 +138,8 @@ public class AddMovie extends javax.swing.JFrame {
 
         ActorField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        GRadio.setBackground(new java.awt.Color(0, 100, 123));
+        GRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         GRadio.setForeground(new java.awt.Color(255, 255, 255));
         GRadio.setText("G");
         GRadio.addActionListener(new java.awt.event.ActionListener() {
@@ -146,9 +148,13 @@ public class AddMovie extends javax.swing.JFrame {
             }
         });
 
+        PGRadio.setBackground(new java.awt.Color(0, 100, 123));
+        PGRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         PGRadio.setForeground(new java.awt.Color(255, 255, 255));
         PGRadio.setText("PG");
 
+        PG13Radio.setBackground(new java.awt.Color(0, 100, 123));
+        PG13Radio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         PG13Radio.setForeground(new java.awt.Color(255, 255, 255));
         PG13Radio.setText("PG-13");
         PG13Radio.addActionListener(new java.awt.event.ActionListener() {
@@ -157,9 +163,13 @@ public class AddMovie extends javax.swing.JFrame {
             }
         });
 
+        RRadio.setBackground(new java.awt.Color(0, 100, 123));
+        RRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         RRadio.setForeground(new java.awt.Color(255, 255, 255));
         RRadio.setText("R");
 
+        NC17Radio.setBackground(new java.awt.Color(0, 100, 123));
+        NC17Radio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         NC17Radio.setForeground(new java.awt.Color(255, 255, 255));
         NC17Radio.setText("NC-17");
         NC17Radio.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +178,7 @@ public class AddMovie extends javax.swing.JFrame {
             }
         });
 
+        AddMovieButton.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         AddMovieButton.setText("Add Movie");
         AddMovieButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +186,7 @@ public class AddMovie extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,9 +212,7 @@ public class AddMovie extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 314, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabel8))
+                        .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 314, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -213,14 +223,9 @@ public class AddMovie extends javax.swing.JFrame {
                                 .add(jLabel2)
                                 .add(jLabel9)
                                 .add(jPanel1Layout.createSequentialGroup()
-                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                        .add(jPanel1Layout.createSequentialGroup()
-                                            .add(8, 8, 8)
-                                            .add(jLabel11)
-                                            .add(44, 44, 44))
-                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .add(18, 18, 18)))
+                                    .add(39, 39, 39)
+                                    .add(ReleaseYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 62, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(18, 18, 18)
                                     .add(ReleaseMonth, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                     .add(ReleaseDay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -230,9 +235,11 @@ public class AddMovie extends javax.swing.JFrame {
                                         .add(CategoryBox1, 0, 165, Short.MAX_VALUE)
                                         .add(CategoryBox2, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .add(CategoryBox3, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .add(jPanel1Layout.createSequentialGroup()
-                                    .add(46, 46, 46)
-                                    .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                .add(jLabel11)
+                                .add(jLabel8))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                                .add(49, 49, 49)
+                                .add(QuantityField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

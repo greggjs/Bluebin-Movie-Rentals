@@ -76,33 +76,41 @@ public class UpdateUser extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 100, 123));
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Update Profile Information");
 
+        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Update Phone");
 
+        jLabel3.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Update Credit Card");
 
+        jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Change Password");
 
+        CCLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         CCLabel.setForeground(new java.awt.Color(255, 255, 255));
         CCLabel.setText("On File: "+credit_card);
 
+        PhoneLabel.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         PhoneLabel.setForeground(new java.awt.Color(255, 255, 255));
         PhoneLabel.setText("On File: "+ phone);
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
+        jLabel7.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Old Password");
 
+        jLabel8.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("New Password");
 
+        jLabel9.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Confirm Password");
 
@@ -114,6 +122,7 @@ public class UpdateUser extends javax.swing.JFrame {
 
         NewPWField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        UpdatePhone.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         UpdatePhone.setText("Update");
         UpdatePhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,6 +130,7 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
 
+        UpdateCC.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         UpdateCC.setText("Update");
         UpdateCC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +140,7 @@ public class UpdateUser extends javax.swing.JFrame {
 
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
 
+        ChangePW.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         ChangePW.setText("Change");
         ChangePW.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +148,7 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
 
+        Cancel.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         Cancel.setText("Cancel");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

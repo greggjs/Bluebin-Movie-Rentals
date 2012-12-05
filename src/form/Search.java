@@ -103,6 +103,7 @@ public class Search extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jButton2.setBackground(new java.awt.Color(0, 100, 123));
+        jButton2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +112,7 @@ public class Search extends javax.swing.JFrame {
         });
 
         jButton1.setBackground(new java.awt.Color(0, 100, 123));
+        jButton1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton1.setText("Search");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,11 +129,13 @@ public class Search extends javax.swing.JFrame {
 
         TitleRadio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup1.add(TitleRadio);
+        TitleRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         TitleRadio.setForeground(new java.awt.Color(255, 255, 255));
         TitleRadio.setText("Title");
 
         KeywordRadio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup1.add(KeywordRadio);
+        KeywordRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         KeywordRadio.setForeground(new java.awt.Color(255, 255, 255));
         KeywordRadio.setText("Keyword");
 
@@ -145,11 +149,13 @@ public class Search extends javax.swing.JFrame {
 
         GRadio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup2.add(GRadio);
+        GRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         GRadio.setForeground(new java.awt.Color(255, 255, 255));
         GRadio.setText("G");
 
         PGRadio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup2.add(PGRadio);
+        PGRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         PGRadio.setForeground(new java.awt.Color(255, 255, 255));
         PGRadio.setText("PG");
         PGRadio.addActionListener(new java.awt.event.ActionListener() {
@@ -160,11 +166,13 @@ public class Search extends javax.swing.JFrame {
 
         RRadio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup2.add(RRadio);
+        RRadio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         RRadio.setForeground(new java.awt.Color(255, 255, 255));
         RRadio.setText("R");
 
         NC17Radio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup2.add(NC17Radio);
+        NC17Radio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         NC17Radio.setForeground(new java.awt.Color(255, 255, 255));
         NC17Radio.setText("NC-17");
 
@@ -175,6 +183,7 @@ public class Search extends javax.swing.JFrame {
 
         PG13Radio.setBackground(new java.awt.Color(0, 100, 123));
         buttonGroup2.add(PG13Radio);
+        PG13Radio.setFont(new java.awt.Font("Tempus Sans ITC", 0, 11)); // NOI18N
         PG13Radio.setForeground(new java.awt.Color(255, 255, 255));
         PG13Radio.setText("PG-13");
 
@@ -197,6 +206,7 @@ public class Search extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton3.setText("Search");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,6 +214,7 @@ public class Search extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton4.setText("Search");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,6 +222,7 @@ public class Search extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton5.setText("Search");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,6 +230,7 @@ public class Search extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setFont(new java.awt.Font("Tempus Sans ITC", 1, 11)); // NOI18N
         jButton6.setText("Search");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,10 +248,6 @@ public class Search extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(197, 197, 197)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,6 +303,10 @@ public class Search extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator3))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(207, 207, 207)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,9 +352,9 @@ public class Search extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ActorBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addContainerGap())
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
