@@ -130,6 +130,7 @@ public class Search extends javax.swing.JFrame {
         KeywordRadio.setText("Keyword");
 
         GenreBox.setBackground(new java.awt.Color(0, 100, 123));
+        GenreBox.setForeground(new java.awt.Color(255, 255, 255));
         GenreBox.setModel(model1);
 
         jLabel2.setBackground(new java.awt.Color(0, 100, 123));
@@ -177,6 +178,7 @@ public class Search extends javax.swing.JFrame {
         jLabel4.setText("Release Year");
 
         ActorBox.setBackground(new java.awt.Color(0, 100, 123));
+        ActorBox.setForeground(new java.awt.Color(255, 255, 255));
         ActorBox.setModel(model2);
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
@@ -184,6 +186,7 @@ public class Search extends javax.swing.JFrame {
         jLabel5.setText("Actor");
 
         YearBox.setBackground(new java.awt.Color(0, 100, 123));
+        YearBox.setForeground(new java.awt.Color(255, 255, 255));
         YearBox.setModel(model3);
         YearBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
