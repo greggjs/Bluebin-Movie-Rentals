@@ -23,12 +23,18 @@ import movie.*;
  */
 
 /**
- *
+ * Displays the results of an Advanced Search. Users
+ * can either rent a movie from the query or cancel and
+ * go back to the advanced search menu.
+ * 
+ * Form by Patrick Cunto, Code by Jake Gregg
  * @author cutnop
  */
 public class SearchResults extends javax.swing.JFrame {
     Main main;
+    // results are stored here
     StringBuilder res;
+    // for the table...
     Object[][] data = null;
     String col[] = new String [] {
                 "Title", "Release Date", "Rating", "Quantity"
@@ -146,6 +152,11 @@ public class SearchResults extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Rents a selected movie then returns to the Search window
+     * 
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         rentMovie();
@@ -157,12 +168,24 @@ public class SearchResults extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Clears out the results and opens the Advanced Search window
+     * after the window is closed.
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         main.searchResultsFrame = null;
         main.searchFrame.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Closes the Results window and opens up the Advanced Search
+     * window.
+     * 
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -170,18 +193,26 @@ public class SearchResults extends javax.swing.JFrame {
         main.searchFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Fills the table with the results upon the form opening.
+     * 
+     * @param evt 
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         fillTable();
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * Fills the table with the results of the Advanced
+     * Search query.
+     */
     public void fillTable() {
+        // stores the query results in a string array
         String res_s = res.toString();
         String [] rel_arr = res_s.split("~");
         int row = 0;
+        // adds each to the table to be displayed.
         for (int i = 0; i < rel_arr.length-3; i+=4) {
             model.insertRow(row, new Object[]{rel_arr[i],
                 rel_arr[i+1], rel_arr[i+2], rel_arr[i+3]});
@@ -189,52 +220,24 @@ public class SearchResults extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Rents a selected movie from the table and returns 
+     * the User to the Advanced Search window. Does not
+     * let the user rent a movie with no movies in stock.
+     */
     public void rentMovie() {
         
+        // get the selected movie. if nothing is 
+        // selected, then return.
         int row_selected = jTable1.getSelectedRow();
         if (row_selected == -1) {
             JOptionPane.showMessageDialog(this,
                     "Please select a movie to rent");
             return;
         }
-        String movie_title = jTable1.getModel()
-                .getValueAt(row_selected, 0).toString();
-        String movie_q = "select movie_id from"
-                + " Movie where movie_name='"+movie_title+"'";
-        String movie_id = null;
         
-        movie_id = selectStm(movie_q, "movie_id");
-        String bank = "select renter_phone from "
-                + "Has_Rented where movie_id = "
-                +movie_id+" and renter_phone = '"
-                +main.curr.getPhone()
-                +"';";
-        String test = selectStm(bank, "renter_phone");
-        if (main.curr.getPhone().equals(test)) {
-            JOptionPane.showMessageDialog(this, "You already"
-                    + " have this movie rented out...");
-            return;
-        }
-        int choice = JOptionPane.showConfirmDialog(this, 
-                "Charge $3.00 to your credit card on file for this"
-                + " rental?",
-                "Rent New Release", JOptionPane.YES_NO_OPTION);
-        if (choice == JOptionPane.NO_OPTION)
-            return;
-        
-        Long curr_time = System.currentTimeMillis();
-        Long seven_days = (long)604800000;
-        Long due_time = curr_time+seven_days;
-        
-        Date curr_date = new Date(curr_time);
-        Date due_date = new Date(due_time);
-        
-        bank = "insert into Has_Rented values('"
-                +main.curr.getPhone()+"', "+movie_id
-                +", '"+curr_date+"','"+due_date+"');";
-        
-        prepStm(bank);
-        
+        // checks if there are any movies to rent. if not, 
+        // return.
         int quantity = Integer.parseInt(
                 (String)(jTable1.getModel()
                 .getValueAt(row_selected, 3)));
@@ -244,21 +247,80 @@ public class SearchResults extends javax.swing.JFrame {
             return;
         }
         
+        // get the movie id of the movie selected from the
+        // given movie title.
+        String movie_title = jTable1.getModel()
+                .getValueAt(row_selected, 0).toString();
+        String movie_q = "select movie_id from"
+                + " Movie where movie_name='"+movie_title+"'";
+        String movie_id = null;
+        movie_id = selectStm(movie_q, "movie_id");
+        
+        // Check and see if the movie was already rented by
+        // the user. if it was, do not let them rent it.
+        String bank = "select renter_phone from "
+                + "Has_Rented where movie_id = "
+                +movie_id+" and renter_phone = '"
+                +main.curr.getPhone()
+                +"';";
+        String test = selectStm(bank, "renter_phone");
+        if (main.curr.getPhone().equals(test)) { // check if rented
+            JOptionPane.showMessageDialog(this, "You already"
+                    + " have this movie rented out...");
+            return;
+        }
+        
+        // ask the user if they would like to charge their card on
+        // file, like asking if they're sure they want this one.
+        // if not, return.
+        int choice = JOptionPane.showConfirmDialog(this, 
+                "Charge $3.00 to your credit card on file for this"
+                + " rental?",
+                "Rent New Release", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.NO_OPTION)
+            return;
+        
+        // calculate the rental date and the due date
+        // in miliseconds
+        Long curr_time = System.currentTimeMillis();
+        Long seven_days = (long)604800000;
+        Long due_time = curr_time+seven_days;
+        
+        // generate SQL Dates for insert
+        Date curr_date = new Date(curr_time);
+        Date due_date = new Date(due_time);
+        
+        // insert rental into Has_Rented for records
+        bank = "insert into Has_Rented values('"
+                +main.curr.getPhone()+"', "+movie_id
+                +", '"+curr_date+"','"+due_date+"');";
+        prepStm(bank);
+        
+        // update quantity of movie.
         bank = "update Movie set quantity "
                 + "= quantity-1 where movie_id="+movie_id+";";
         prepStm(bank);
         
+        // return the user to the Advanced Search frame.
         this.setVisible(false);
         main.searchResultsFrame = null;
         main.searchFrame.setVisible(true);
     }
     
+    /**
+     * Executes a prepared SQL statement in the database, such
+     * as an insertion, update, or deletion.
+     * 
+     * @param bank query to be executed
+     */
     public void prepStm(String bank) {
         try {
+            // connect to database
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/fall2012"
                     + "?user=greggjs&password=greggjs");
+            // make the statement and execute.
             PreparedStatement stm = conn.prepareStatement(bank);
             stm.execute();
         } catch (SQLException err) {
@@ -268,13 +330,24 @@ public class SearchResults extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Executes a SQL statement in the database and returns 
+     * a result set from selection queries as a String.
+     * 
+     * @param bank query to be executed
+     * @param type item to be returned from result set
+     * @return result as a String
+     */
     public String selectStm(String bank, String type) {
-        String res = null;
+        String res = null; // returned string variable
         try {
+            // create connection
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/"
                     + "fall2012?user=greggjs&password=greggjs");
+            // make a statment and result set to store query and
+            // results.
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(bank);
             while(rs.next()) {
@@ -286,7 +359,7 @@ public class SearchResults extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             System.out.println ("cannot find driver!");
         }
-        return res;
+        return res; // return results as String.
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
